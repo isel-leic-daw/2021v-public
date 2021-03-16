@@ -5,7 +5,7 @@
 * Project - phase 1
   * Publication: 2021-03-22 (W2).
   * Delivery: 2021-04-24 (W5).
-  * Demos: week W6.
+  * Demos: week 6.
 
 * Project - phase 2
   * Publication: 2021-04-26 (W6).

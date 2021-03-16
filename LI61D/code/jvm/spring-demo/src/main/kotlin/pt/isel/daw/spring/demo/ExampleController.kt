@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class ExampleController(
-    private val greetingsMessageService: GreetingsMessageService
+    private val greetingsMessageService: GreetingsMessageService,
 ) {
 
     @GetMapping("/examples/1")

@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController
 @SpringBootApplication
 class SpringDemoApplication
 
-val log = LoggerFactory.getLogger(SpringDemoApplication::class.java)
+private val log = LoggerFactory.getLogger(SpringDemoApplication::class.java)
 
 fun main(args: Array<String>) {
-	val context = runApplication<SpringDemoApplication>(*args)
-	context.getBeansWithAnnotation(RestController::class.java).forEach{ (key, value) ->
-		log.info("Found controller bean '{}' with type '{}'", key, value.javaClass.name)
-	}
+    val context = runApplication<SpringDemoApplication>(*args)
+    context.getBeansWithAnnotation(RestController::class.java).forEach { (key, value) ->
+        log.info("Found controller bean '{}' with type '{}'", key, value.javaClass.name)
+    }
 }

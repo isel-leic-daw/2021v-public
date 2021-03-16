@@ -16,4 +16,7 @@ class ExampleController(
 
     @GetMapping("/examples/3")
     fun get3() = greetingsMessageService.greet()
+
+    @GetMapping("/examples/4")
+    fun get4(): Unit = throw Exception("As an example")
 }

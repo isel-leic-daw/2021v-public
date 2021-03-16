@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 data class MappingItemRepr(
     val description: String,
 )
+
 data class MappingRepr(
     val items: List<MappingItemRepr>,
 )
@@ -18,13 +19,14 @@ data class MappingRepr(
 class IntrospectionController(
     // Note how we are depending on an infra-structure "bean"
     private val mapping: RequestMappingHandlerMapping
-    ) {
+) {
 
     @GetMapping()
     fun get() = MappingRepr(
         items = mapping.handlerMethods.keys.map {
             MappingItemRepr(
-                description = it.toString())
+                description = it.toString()
+            )
         }
     )
 }

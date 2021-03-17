@@ -15,13 +15,11 @@ Lecturer: Paulo Pereira
   * Through construction parameters
   * Done explicitely by a wiring up procedure that constructs the solution's object graph 
 * Materialization on the [HVAC controller application](demos/hvac)
-
 * DI containers: [Spring](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#spring-core)
   * Motivation
   * Using Spring through [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
   * [Spring Initializr](https://start.spring.io/)
 * Refactoring the [HVAC controller application to use Spring](demos/hvac-spring)
-
 * Complementary references, for the inquisitive minds
   * [Software quality](https://en.wikipedia.org/wiki/Software_quality)
     * [Seriously Good Software, by Marco Faella](https://www.manning.com/books/seriously-good-software)

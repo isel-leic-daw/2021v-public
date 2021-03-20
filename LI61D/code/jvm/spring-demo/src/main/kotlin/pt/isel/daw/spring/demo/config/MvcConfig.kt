@@ -3,8 +3,10 @@ package pt.isel.daw.spring.demo.config
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import pt.isel.daw.spring.demo.pipeline.argumentresolvers.ClientIpArgumentResolver
+import pt.isel.daw.spring.demo.pipeline.interceptors.ExampleInterceptor
 import pt.isel.daw.spring.demo.pipeline.messageconverters.UriToPngMessageConverter
 
 /*
@@ -20,5 +22,9 @@ class MvcConfig : WebMvcConfigurer {
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
         converters.add(UriToPngMessageConverter())
+    }
+
+    override fun addInterceptors(registry: InterceptorRegistry) {
+        registry.addInterceptor(ExampleInterceptor())
     }
 }

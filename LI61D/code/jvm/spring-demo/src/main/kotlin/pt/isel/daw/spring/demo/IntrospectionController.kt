@@ -11,7 +11,7 @@ data class MappingItemRepr(
 )
 
 data class MappingRepr(
-    val items: List<MappingItemRepr>,
+    val list: List<MappingItemRepr>,
 )
 
 @RestController
@@ -23,7 +23,7 @@ class IntrospectionController(
 
     @GetMapping()
     fun get() = MappingRepr(
-        items = mapping.handlerMethods.keys.map {
+        list = mapping.handlerMethods.keys.map {
             MappingItemRepr(
                 description = it.toString()
             )

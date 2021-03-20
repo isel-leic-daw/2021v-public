@@ -1,4 +1,4 @@
-package pt.isel.daw.spring.demo
+package pt.isel.daw.spring.demo.pipeline.filters
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component

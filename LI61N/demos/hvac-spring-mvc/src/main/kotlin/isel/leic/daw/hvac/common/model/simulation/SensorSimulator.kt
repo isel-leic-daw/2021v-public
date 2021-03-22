@@ -1,7 +1,7 @@
-package isel.leic.daw.hvac.simulation
+package isel.leic.daw.hvac.common.model.simulation
 
-import isel.leic.daw.hvac.Sensor
-import isel.leic.daw.hvac.Temperature
+import isel.leic.daw.hvac.common.model.Sensor
+import isel.leic.daw.hvac.common.model.Temperature
 import isel.leic.daw.threadSafe
 import org.springframework.stereotype.Component
 import kotlin.properties.Delegates.observable
@@ -9,7 +9,7 @@ import kotlin.properties.Delegates.observable
 /**
  * Implementation of a sensor simulator that always reports the last written temperature.
  */
-@Component("Sensor Simulator")
+@Component
 class SensorSimulator(initialTemperature: Temperature = Temperature.HUMAN_COMFORT) : Sensor {
 
     override var temperature: Temperature by threadSafe(observable(initialTemperature) { _, _, newValue: Temperature ->

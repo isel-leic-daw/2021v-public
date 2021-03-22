@@ -28,3 +28,20 @@ Lecturer: Paulo Pereira
     * Mark Seeman ([Ploeh Blog](https://blog.ploeh.dk/))
     * Robert Martin (a.k.a Uncle Bob) ([The Clean Code Blog](https://blog.cleancoder.com/))
     * Martin Fowler ([Home page](https://martinfowler.com/))
+
+### 22/03/2021 - Spring and Spring MVC
+* Spring
+  * Main elements of the programming model 
+    * [Application Context](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-basics) and [AnnotationConfigApplicationContext](https://docs.spring.io/spring-framework/docs/5.3.5/javadoc-api/org/springframework/web/context/support/AnnotationConfigWebApplicationContext.html)
+    * [Beans](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-definition) and [Bean scopes](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-scopes)
+  * [Constructor based dependency injection](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-constructor-injection)
+  * [Resolving dependencies through classpath scanning](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-classpath-scanning)
+* Demo illustrating the use of `AnnotationConfigApplicationContext` in contrast to `@SpringBootApplication`
+  * The commit corresponding to the demo codebase in its final form is [here]() (TODO: commit after lecture)
+* Spring MVC, introduction
+  * Servlet container architecture (overview): servlets and filters
+  * Spring MVC architecture overview ([diagram](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mvc.html#mvc-servlet))
+    * [Spring MVC application context](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-servlet-context-hierarchy)
+    * [DispatcherServlet](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-servlet)
+    * [MVC Controllers](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-controller)
+* Demo with the creation of an HTTP API for the HVAC controller application ([here]()) (TODO: point to the commit)

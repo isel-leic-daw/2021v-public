@@ -1,9 +1,7 @@
-package isel.leic.daw.hvac.simulation
+package isel.leic.daw.hvac.common.model.simulation
 
-import isel.leic.daw.hvac.Cooler
-import isel.leic.daw.hvac.Heater
-import isel.leic.daw.hvac.Power
-import isel.leic.daw.hvac.Temperature
+import isel.leic.daw.hvac.common.model.*
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
@@ -12,18 +10,20 @@ import kotlin.concurrent.fixedRateTimer
  * Class used to capture similarities between the [CoolerSimulator] and the [HeaterSimulator] implementations.
  */
 private class TemperatureActuator(
-    private val sensor: SensorSimulator,
-    private val message: String,
-    private val actuator: (Temperature) -> Temperature) {
+        private val sensor: SensorSimulator,
+        private val message: String,
+        private val actuator: (Temperature) -> Temperature) {
 
     private var timer: Timer? = null
+    private val logger = LoggerFactory.getLogger(TemperatureActuator::class.java)
 
     /**
      * Starts the actuator operation, if not already started.
      */
     fun start() {
         if (timer == null) {
-            timer = fixedRateTimer(message, initialDelay = 5 * 1000, period = 5 * 1000) {
+            logger.info(message)
+            timer = fixedRateTimer(message, initialDelay = 10 * 1000, period = 10 * 1000) {
                     sensor.temperature = actuator(sensor.temperature)
             }
         }
@@ -43,7 +43,7 @@ private class TemperatureActuator(
 /**
  * Implementation of a cooling system simulator
  */
-@Component("Cooler Simulator")
+@Component
 class CoolerSimulator(sensor: SensorSimulator) : Cooler {
 
     private val actuator = TemperatureActuator(sensor, "Cooler running") { (it - 1f) ?: it }
@@ -63,7 +63,7 @@ class CoolerSimulator(sensor: SensorSimulator) : Cooler {
 /**
  * Implementation of a heating system simulator
  */
-@Component("Heater Simulator")
+@Component
 class HeaterSimulator(sensor: SensorSimulator) : Heater {
 
     private val actuator = TemperatureActuator(sensor, "Heater running") { (it + 1f) ?: it }

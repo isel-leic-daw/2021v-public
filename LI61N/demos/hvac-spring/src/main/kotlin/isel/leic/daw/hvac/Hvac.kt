@@ -1,5 +1,6 @@
 package isel.leic.daw.hvac
 
+import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 
 /**
@@ -7,7 +8,8 @@ import org.springframework.stereotype.Component
  *
  * @constructor Initiates an instance with the specified dependencies.
  */
-@Component
+@Component("HVAC")
+@Scope("prototype")
 class Hvac(private val sensor: Sensor, private val cooler: Cooler, private val heater: Heater) {
 
     /**

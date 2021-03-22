@@ -25,6 +25,9 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	// for QR code generation
+	implementation("net.glxn:qrgen:1.4")
 }
 
 tasks.withType<KotlinCompile> {

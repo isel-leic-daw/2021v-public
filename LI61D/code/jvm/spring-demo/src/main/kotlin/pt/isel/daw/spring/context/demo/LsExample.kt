@@ -49,6 +49,9 @@ class Router(val handlers: List<CommandHandler>) {
     }
 }
 
+@Component
+class DbConfig
+
 /**
  * Configuration class, used to configure the DI process done by the Spring context
  * - Via annotations, namely the [@ComponentScan] that enables the scan of @Component annotated classes
@@ -60,7 +63,7 @@ class Router(val handlers: List<CommandHandler>) {
 class MyConfig {
 
     @Bean
-    open fun createDataSource() : DemoDataSource {
+    fun createDataSource(config: DbConfig) : DemoDataSource {
         // lets pretend a good data source is created and initialized
         return object : DemoDataSource{}
     }
@@ -71,15 +74,6 @@ fun main() {
     println("Hello Spring Context Example")
     val context = AnnotationConfigApplicationContext(
         MyConfig::class.java,
-
-        /* Without component scan
-        Router::class.java,
-        DefaultTransactionManager::class.java,
-
-        GetStudents::class.java,
-        PostStudents::class.java,
-        PostClasses::class.java
-         */
     )
 
     val router: Router = context.getBean(Router::class.java)

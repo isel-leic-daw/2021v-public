@@ -19,6 +19,7 @@ private val log = LoggerFactory.getLogger(ExampleFilter::class.java)
  * via component scan.
  */
 @Component
+// Singleton
 class ExampleFilter : Filter {
     override fun doFilter(
         request: ServletRequest,

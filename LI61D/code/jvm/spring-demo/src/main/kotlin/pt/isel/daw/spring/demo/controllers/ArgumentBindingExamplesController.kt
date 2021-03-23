@@ -9,22 +9,23 @@ import javax.servlet.http.HttpServletRequest
  * Parameter binding examples
  */
 
-data class InputModel(
+data class StudentInputModel(
     val name: String,
     val number: Int,
 )
 
 @RestController
-@RequestMapping("pb-examples")
-class ParameterBindingExamplesController {
+@RequestMapping("ab-examples")
+class ArgumentBindingExamplesController {
 
-    // Binding path variables to parameters
+    // Binding path variables to arguments
+    // /ab-examples/0/{id}
     @GetMapping("0/{id}")
     fun handler0(
         @PathVariable id: Int,
     ) = "handler0 with $id"
 
-    // Binding query string values to parameters
+    // Binding query string values to arguments
     @GetMapping("1")
     fun handler1(
         @RequestParam id: Int,
@@ -33,10 +34,10 @@ class ParameterBindingExamplesController {
     // Support for optional query string value
     @GetMapping("2")
     fun handler2(
-        @RequestParam() id: Int?,
-    ) = "handler1 with ${id ?: "absent"}"
+        @RequestParam id: Int?,
+    ) = "handler2 with ${id ?: "absent"}"
 
-    // Binding all query string pairs to a parameter
+    // Binding all query string pairs to an arguments
     @GetMapping("3")
     fun handler3(
         @RequestParam prms: MultiValueMap<String, String>,
@@ -44,7 +45,7 @@ class ParameterBindingExamplesController {
         .map { "${it.key}: ${it.value.joinToString(", ", "[", "]")}\n" }
         .joinToString()
 
-    // Using a custom ArgumentResolver to bind a custom type to a parameter
+    // Using a custom ArgumentResolver to bind a custom type to an arguments
     @GetMapping("4")
     fun handler4(
         clientIp: ClientIp,
@@ -53,13 +54,19 @@ class ParameterBindingExamplesController {
     // Using generic argument resolution, supporting JSON
     @PostMapping("5")
     fun handler5(
-        @RequestBody input: InputModel,
-    ) = input.toString()
+        @RequestBody input: StudentInputModel,
+    ) = "Received student with name=${input.name} and number=${input.number}"
 
     // Binding the raw HttpServletRequest to the request
     @PostMapping("6")
     fun handler6(
         request: HttpServletRequest,
-        @RequestBody input: InputModel,
+        @RequestBody input: StudentInputModel,
     ) = "Accept: ${request.getHeader("Accept")}, Body: ${input.toString()} }"
+
+    @GetMapping("7/{aid}/b/{bid}")
+    fun handler7(
+        @PathVariable aid: Int,
+        @PathVariable bid: String,
+    ) = "handler7 with aid=$aid and bid=$bid"
 }

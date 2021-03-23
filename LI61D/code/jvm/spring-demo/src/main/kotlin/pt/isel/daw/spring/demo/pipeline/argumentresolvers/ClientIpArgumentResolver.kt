@@ -11,13 +11,14 @@ import javax.servlet.http.HttpServletRequest
 
 class ClientIpArgumentResolver : HandlerMethodArgumentResolver {
 
-    override fun supportsParameter(parameter: MethodParameter)
-        = parameter.parameterType == ClientIp::class.java
+    override fun supportsParameter(parameter: MethodParameter) =
+        parameter.parameterType == ClientIp::class.java
 
     override fun resolveArgument(
-            parameter: MethodParameter,
-            mavContainer: ModelAndViewContainer?,
-            webRequest: NativeWebRequest, binderFactory: WebDataBinderFactory?) =
+        parameter: MethodParameter,
+        mavContainer: ModelAndViewContainer?,
+        webRequest: NativeWebRequest, binderFactory: WebDataBinderFactory?
+    ) =
         ClientIp(webRequest.getNativeRequest(HttpServletRequest::class.java)!!.remoteAddr)
 
 }

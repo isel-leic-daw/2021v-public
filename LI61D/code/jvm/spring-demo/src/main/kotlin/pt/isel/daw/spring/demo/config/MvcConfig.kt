@@ -1,7 +1,7 @@
 package pt.isel.daw.spring.demo.config
 
-import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.stereotype.Component
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
@@ -13,7 +13,7 @@ import pt.isel.daw.spring.demo.pipeline.messageconverters.UriToPngMessageConvert
  * Example MVC configuration
  */
 // TODO show how to use DI here as well
-@Configuration
+@Component
 class MvcConfig : WebMvcConfigurer {
 
     override fun addArgumentResolvers(resolverList: MutableList<HandlerMethodArgumentResolver>) {

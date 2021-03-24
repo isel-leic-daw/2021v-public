@@ -4,9 +4,18 @@ import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.RestController
+import com.fasterxml.jackson.annotation.JsonInclude
+import org.springframework.context.annotation.Bean
+
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+
 
 @SpringBootApplication
-class SpringDemoApplication
+class SpringDemoApplication {
+    @Bean
+    fun jackson2ObjectMapperBuilder() = Jackson2ObjectMapperBuilder()
+        .serializationInclusion(JsonInclude.Include.NON_NULL)
+}
 
 private val log = LoggerFactory.getLogger(SpringDemoApplication::class.java)
 

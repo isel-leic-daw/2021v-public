@@ -28,6 +28,10 @@ dependencies {
 
 	// for QR code generation
 	implementation("net.glxn:qrgen:1.4")
+
+	// for JDBI
+	implementation("org.jdbi:jdbi3-core:3.18.1")
+	implementation("org.postgresql:postgresql:42.2.19")
 }
 
 tasks.withType<KotlinCompile> {

@@ -31,6 +31,7 @@ dependencies {
 
 	// for JDBI
 	implementation("org.jdbi:jdbi3-core:3.18.1")
+	implementation("org.jdbi:jdbi3-kotlin:3.18.1")
 	implementation("org.postgresql:postgresql:42.2.19")
 }
 
@@ -43,4 +44,23 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+task<Exec>("dbTestsUp") {
+	commandLine("docker-compose", "up", "-d", "db-tests")
+}
+
+task<Exec>("dbTestsWait") {
+	commandLine("docker", "exec", "db-tests", "/app/bin/wait-for-postgres.sh", "localhost")
+	dependsOn("dbTestsUp")
+}
+
+task<Exec>("dbTestsDown") {
+	commandLine("docker-compose", "down")
+}
+
+tasks {
+	named<Test>("test") {
+		dependsOn("dbTestsWait")
+	}
 }

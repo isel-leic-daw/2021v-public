@@ -69,7 +69,7 @@ Lecturer: Paulo Pereira
 
 [Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=zknHDRuc91s&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=3)
 
-### 05/04/2021 - Web API design, introduction
+### 07/04/2021 - Web API design, introduction
 * Web APIs (or HTTP APIs): Concept and Motivation
 * Distributed systems' basic concepts
   * ["Fallacies of distributed computing"](https://www.researchgate.net/publication/322500050_Fallacies_of_Distributed_Computing_Explained)
@@ -88,4 +88,4 @@ Lecturer: Paulo Pereira
 * Documentation:
   * ["Introduction to Web APIs"](https://github.com/isel-leic-daw/1819v-public/wiki/Web-APIs)
   * ["Designing evolvable Web APIs: Chapter 1"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/ch01.html)
-  * ["Designing evolvable Web APIs: Chapter 2"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/ch02.html)
+  * ["Designing evolvable Web APIs: Chapter 2"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/ch02.html)In

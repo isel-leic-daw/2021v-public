@@ -1,16 +1,6 @@
 package isel.leic.daw.hvac.common.model
 
-import java.lang.Float.parseFloat
 import kotlin.math.abs
-
-class InvalidTemperature : Exception()
-
-/**
- * Extension method that parses the string as a [Temperature] value and returns the result.
- *
- * @return  the resulting [Temperature] instance or null if the string could not be parsed as a valid temperature.
- */
-fun String.toTemperature(): Temperature? = try { Temperature(parseFloat(this)) } catch(e: NumberFormatException) { null }
 
 /**
  * Data type for representing temperatures in the context of the HVAC system. All values are expressed in
@@ -39,9 +29,6 @@ class Temperature private constructor(val value: Float) {
          * Overload of the function call operator to have the same behavior as the [of] function
          */
         operator fun invoke(value: Float): Temperature? = of(value)
-
-        fun validate(temperature: Temperature): Boolean =
-                temperature.value <= MAX.value && temperature.value > 0
     }
 
     /**

@@ -99,7 +99,7 @@ Lecturer: Paulo Pereira
   * [Content negotiation](https://tools.ietf.org/html/rfc7231#section-5.3)
   * [HTTP Authentication](https://tools.ietf.org/html/rfc7235)
 * Hypermedia, introduction
-  * "Hypermedia is defined by the presence of application control information embedded within, or as a layer above, the presentation of information." in [Principle Desing of the Modern Web Architecture](https://www.ics.uci.edu/~taylor/documents/2002-REST-TOIT.pdf) 
+  * "Hypermedia is defined by the presence of application control information embedded within, or as a layer above, the presentation of information.", in [Principle Design of the Modern Web Architecture](https://www.ics.uci.edu/~taylor/documents/2002-REST-TOIT.pdf) 
 * The Spring MVC framework, revisited:
   * [Handler methods, argument binding and message conversion](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-methods)
   * [Exception Handling](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-exceptionhandler)

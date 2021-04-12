@@ -2,6 +2,7 @@ package isel.leic.daw.hvac.state
 
 import isel.leic.daw.hvac.common.HVAC_PATH
 import isel.leic.daw.hvac.common.POWER_STATE_PART
+import isel.leic.daw.hvac.common.authorization.RestrictedAccess
 import isel.leic.daw.hvac.common.model.Hvac
 import org.springframework.web.bind.annotation.*
 
@@ -16,6 +17,7 @@ class HvacStateController(private val hvac: Hvac) {
     fun getPowerState() =
             PowerStateOutputModel(hvac.power.name)
 
+    @RestrictedAccess
     @PutMapping(POWER_STATE_PART)
     fun putPowerState(@RequestBody state: PowerStateInputModel): PowerStateOutputModel {
         hvac.power = state.toPower()

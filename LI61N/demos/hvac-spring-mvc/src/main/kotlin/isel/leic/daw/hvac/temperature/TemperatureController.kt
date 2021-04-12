@@ -1,6 +1,7 @@
 package isel.leic.daw.hvac.temperature
 
 import isel.leic.daw.hvac.common.CURRENT_TEMPERATURE_PART
+import isel.leic.daw.hvac.common.authorization.RestrictedAccess
 import isel.leic.daw.hvac.common.TARGET_TEMPERATURE_PART
 import isel.leic.daw.hvac.common.TEMPERATURE_PATH
 import isel.leic.daw.hvac.common.model.Hvac
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*
  * Controller for the Temperature resource
  */
 @RestController
-@RequestMapping(TEMPERATURE_PATH, headers = [ "Accept=application/json"])
+@RequestMapping(TEMPERATURE_PATH, headers = ["Accept=application/json"])
 class TemperatureController(private val hvac: Hvac) {
 
     @ExceptionHandler
@@ -21,6 +22,7 @@ class TemperatureController(private val hvac: Hvac) {
     @GetMapping(TARGET_TEMPERATURE_PART)
     fun getTargetTemperature() = TemperatureOutputModel(hvac.target.value)
 
+    @RestrictedAccess
     @PutMapping(TARGET_TEMPERATURE_PART)
     fun putTargetTemperature(@RequestBody newTemperature: TemperatureInputModel): TemperatureInfoOutputModel {
         hvac.target = newTemperature.toTemperature()

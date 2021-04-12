@@ -1,7 +1,20 @@
 package isel.leic.daw.hvac.temperature
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import isel.leic.daw.hvac.common.*
 import isel.leic.daw.hvac.common.model.Temperature
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
+import java.net.URI
+
+val SET_TARGET_TEMPERATURE_ACTION = SirenAction(
+    name = "set-target-temperature",
+    title = "Set Target Temperature",
+    href = URI(TARGET_TEMPERATURE_PATH),
+    method = HttpMethod.PUT,
+    type = MediaType.APPLICATION_JSON,
+    fields = listOf(SirenAction.Field("value", "number"))
+)
 
 /**
  * Exception used to report the presence of an invalid temperature value. Notice that we are not using exceptions
@@ -16,7 +29,17 @@ class InvalidTemperatureException : Exception()
  * @property    current     The current temperature
  * @property    target      The desired temperature
  */
-class TemperatureInfoOutputModel(val current: Float, val target: Float)
+class TemperatureInfoOutputModel(val current: Float, val target: Float) {
+    fun toSirenObject(actions: List<SirenAction>? = null) = SirenEntity(
+        properties = this,
+        clazz = listOf("TemperatureInfo"),
+        links = listOf(
+            SirenLink(rel = listOf("target-temperature"), href = URI(TARGET_TEMPERATURE_PATH)),
+            SirenLink(rel = listOf("current-temperature"), href = URI(CURRENT_TEMPERATURE_PATH))
+        ),
+        actions = actions
+    )
+}
 
 /**
  * Represents temperature values as received by the HVAC system API
@@ -38,6 +61,13 @@ class TemperatureInputModel @JsonCreator constructor(val value: Float) {
  *
  * @property    value     The temperature value
  */
-class TemperatureOutputModel(val value: Float)
+class TemperatureOutputModel(val value: Float) {
+    fun toSirenObject(selfUri: URI, actions: List<SirenAction>? = null) = SirenEntity(
+        properties = this,
+        clazz = listOf("Temperature"),
+        links = listOf(SirenLink(rel = listOf("self"), href = selfUri)),
+        actions = actions
+    )
+}
 
 

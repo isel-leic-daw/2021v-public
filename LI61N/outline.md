@@ -83,9 +83,37 @@ Lecturer: Paulo Pereira
   * Request-response message exchange semantics and pattern
   * Participants in HTTP based systems: client (e.g. user agent), server and proxies
   * Request methods [semantics](https://tools.ietf.org/html/rfc7231#section-4.3) and [properties](https://tools.ietf.org/html/rfc7231#section-4.2)
-  * Response status code [semantics](https://tools.ietf.org/html/rfc7231#section-6)
   * ["HTTP Method selection"](https://github.com/isel-leic-daw/1819v-public/wiki/HTTP-method-selection)
 * Documentation:
   * ["Introduction to Web APIs"](https://github.com/isel-leic-daw/1819v-public/wiki/Web-APIs)
   * ["Designing evolvable Web APIs: Chapter 1"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/ch01.html)
   * ["Designing evolvable Web APIs: Chapter 2"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/ch02.html)
+* For reference:
+  * ["HTTP protocol"](https://tools.ietf.org/html/rfc7230)
+
+### 12/04/2021 - Web API design, continued
+* The HTTP protocol, continued
+  * Response status code [semantics](https://tools.ietf.org/html/rfc7231#section-6)
+* Error representation with [Problem-Json](https://tools.ietf.org/html/rfc7807)
+* Leveraging HTTP as an application level protocol
+  * [Content negotiation](https://tools.ietf.org/html/rfc7231#section-5.3)
+  * [HTTP Authentication](https://tools.ietf.org/html/rfc7235)
+* Hypermedia, introduction
+  * "Hypermedia is defined by the presence of application control information embedded within, or as a layer above, the presentation of information." in [Principle Desing of the Modern Web Architecture](https://www.ics.uci.edu/~taylor/documents/2002-REST-TOIT.pdf) 
+* The Spring MVC framework, revisited:
+  * [Handler methods, argument binding and message conversion](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-methods)
+  * [Exception Handling](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-exceptionhandler)
+  * [Testing](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#testing)
+* Hypermedia types, introduction
+  * Purpose and motivation
+  * An example: [Siren](https://github.com/kevinswiber/siren)
+* Demo: Moving towards a Hypermedia HVAC Web API
+* Documentation:
+  * ["How to Think About HTTP Status Codes"](https://www.mnot.net/blog/2017/05/11/status_codes)
+  * ["How to fail in HTTP APIs"](https://github.com/isel-leic-daw/1819v-public/wiki/How-to-fail-in-HTTP-APIs)
+  * ["Designing evolvable Web APIs: Appendice C"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/apc.html)
+* For reference:
+  * ["HTTP protocol"](https://tools.ietf.org/html/rfc7230)
+  * ["HTTP Status Code registry"](http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
+  * [IANA Media Types Registry](https://www.iana.org/assignments/media-types/media-types.xhtml)
+  * ["REST"](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)

@@ -18,7 +18,5 @@ class ClientIpArgumentResolver : HandlerMethodArgumentResolver {
         parameter: MethodParameter,
         mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest, binderFactory: WebDataBinderFactory?
-    ) =
-        ClientIp(webRequest.getNativeRequest(HttpServletRequest::class.java)!!.remoteAddr)
-
+    ) = ClientIp(webRequest.getNativeRequest(HttpServletRequest::class.java)!!.remoteAddr)
 }

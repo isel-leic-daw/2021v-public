@@ -1,6 +1,7 @@
 package isel.leic.daw.hvac
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.DeserializationFeature
 import isel.leic.daw.hvac.common.authorization.AccessControlInterceptor
 import isel.leic.daw.hvac.common.authorization.UserInfo
 import isel.leic.daw.hvac.common.authorization.verifyBasicSchemeCredentials
@@ -10,7 +11,7 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
@@ -26,10 +27,15 @@ class ApiConfig : WebMvcConfigurer {
 	}
 
 	/**
-	 * We could be using this override to extend the chain of message converters by adding to the received list.
-	 * But in this case we are using it simply for logging the list of installed message converters.
+	 * Configure the chain of message converters, and log its composition
 	 */
 	override fun extendMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
+		val converter = converters.find {
+			it is MappingJackson2HttpMessageConverter
+		} as MappingJackson2HttpMessageConverter
+		converter.objectMapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+		converter.objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+
 		logger.info("Installed message converters are:")
 		converters.forEach {
 			logger.info("${it.javaClass.name} supporting ${it.supportedMediaTypes}")
@@ -39,15 +45,6 @@ class ApiConfig : WebMvcConfigurer {
 
 @SpringBootApplication
 class HvacSpringMvcApplication {
-
-	/**
-	 * Provides a builder of customized message converters from the Jackson library. These converters handle JSON
-	 * serialization. This is how we can provide a message converter that does not use the default settings.
-	 */
-	@Bean
-	fun jackson2ObjectMapperBuilder() = Jackson2ObjectMapperBuilder()
-		.serializationInclusion(JsonInclude.Include.NON_NULL)
-		.failOnUnknownProperties(true)
 
 	/**
 	 * Provides the implementation of the user credentials verification procedure

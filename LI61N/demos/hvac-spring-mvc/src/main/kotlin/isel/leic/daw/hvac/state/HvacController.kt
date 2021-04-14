@@ -1,21 +1,21 @@
 package isel.leic.daw.hvac.state
 
-import isel.leic.daw.hvac.common.HVAC_PATH
-import isel.leic.daw.hvac.common.POWER_STATE_PART
-import isel.leic.daw.hvac.common.ProblemJson
+import isel.leic.daw.hvac.common.*
 import isel.leic.daw.hvac.common.authorization.ProtectedResource
 import isel.leic.daw.hvac.common.authorization.RestrictedAccess
+import isel.leic.daw.hvac.common.authorization.isFromOwner
 import isel.leic.daw.hvac.common.model.Hvac
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Controller for the Hvac's state resource
  */
 @RestController
-@RequestMapping(HVAC_PATH)
+@RequestMapping(HVAC_PATH, produces = [SIREN_MEDIA_TYPE, MediaType.APPLICATION_JSON_VALUE])
 @ProtectedResource
 class HvacStateController(private val hvac: Hvac) {
 
@@ -33,13 +33,13 @@ class HvacStateController(private val hvac: Hvac) {
         )
 
     @GetMapping(POWER_STATE_PART)
-    fun getPowerState() =
-            PowerStateOutputModel(hvac.power.name)
+    fun getPowerState(req: HttpServletRequest) =
+            PowerStateOutputModel(hvac.power.name).toSirenObject(req.isFromOwner())
 
     @RestrictedAccess
     @PutMapping(POWER_STATE_PART)
-    fun putPowerState(@RequestBody state: PowerStateInputModel): PowerStateOutputModel {
+    fun putPowerState(req: HttpServletRequest, @RequestBody state: PowerStateInputModel): SirenEntity<PowerStateOutputModel> {
         hvac.power = state.toPower()
-        return hvac.power.toOutputModel()
+        return hvac.power.toOutputModel().toSirenObject(req.isFromOwner())
     }
 }

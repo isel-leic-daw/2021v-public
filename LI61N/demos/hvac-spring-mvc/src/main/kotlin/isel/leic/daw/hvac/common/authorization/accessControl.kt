@@ -23,6 +23,12 @@ annotation class ProtectedResource
 annotation class RestrictedAccess
 
 /**
+ * Extension method that checks whether the request has been sent by a user with the Owner role or not
+ * @return true if the user is an Owner, false otherwise
+ */
+fun HttpServletRequest.isFromOwner() = getAttribute(USER_ATTRIBUTE_KEY) as? Owner != null
+
+/**
  * This is an interceptor that verifies if a resource access can be performed by the current user.
  */
 class AccessControlInterceptor : HandlerInterceptor {

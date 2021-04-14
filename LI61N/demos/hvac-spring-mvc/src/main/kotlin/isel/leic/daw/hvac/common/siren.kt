@@ -16,6 +16,14 @@ const val SIREN_MEDIA_TYPE = "${APPLICATION_TYPE}/${SIREN_SUBTYPE}"
  */
 
 /**
+ * Gets a Siren self link for the given URI
+ *
+ * @param uri   the string with the self URI
+ * @return the resulting Ssiren link
+ */
+fun selfLink(uri: String) = SirenLink(rel = listOf("self"), href = URI(uri))
+
+/**
  * Class whose instances represent links as they are represented in Siren.
  */
 data class SirenLink(

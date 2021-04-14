@@ -1,22 +1,23 @@
 package isel.leic.daw.hvac.temperature
 
-import isel.leic.daw.hvac.common.CURRENT_TEMPERATURE_PART
-import isel.leic.daw.hvac.common.ProblemJson
-import isel.leic.daw.hvac.common.TARGET_TEMPERATURE_PART
-import isel.leic.daw.hvac.common.TEMPERATURE_PATH
+import isel.leic.daw.hvac.common.*
 import isel.leic.daw.hvac.common.authorization.ProtectedResource
 import isel.leic.daw.hvac.common.authorization.RestrictedAccess
+import isel.leic.daw.hvac.common.authorization.isFromOwner
 import isel.leic.daw.hvac.common.model.Hvac
+import isel.leic.daw.hvac.state.POWER_STATE_LINK
+import isel.leic.daw.hvac.state.SET_POWER_STATE_ACTION
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.annotation.*
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Controller for the Temperature resource
  */
 @RestController
-@RequestMapping(TEMPERATURE_PATH, headers = ["Accept=application/json"])
+@RequestMapping(TEMPERATURE_PATH, produces = [SIREN_MEDIA_TYPE, MediaType.APPLICATION_JSON_VALUE])
 @ProtectedResource
 class TemperatureController(private val hvac: Hvac) {
 
@@ -34,18 +35,44 @@ class TemperatureController(private val hvac: Hvac) {
         )
 
     @GetMapping(TARGET_TEMPERATURE_PART)
-    fun getTargetTemperature() = TemperatureOutputModel(hvac.target.value)
+    fun getTargetTemperature(req: HttpServletRequest): SirenEntity<TemperatureOutputModel> =
+        TemperatureOutputModel(hvac.target.value).toSirenObject(
+            links = listOf(selfLink(TARGET_TEMPERATURE_PATH)),
+            actions = if (req.isFromOwner()) listOf(SET_TARGET_TEMPERATURE_ACTION) else emptyList()
+        )
 
     @RestrictedAccess
     @PutMapping(TARGET_TEMPERATURE_PART)
-    fun putTargetTemperature(@RequestBody newTemperature: TemperatureInputModel): TemperatureInfoOutputModel {
+    fun putTargetTemperature(
+        req: HttpServletRequest,
+        @RequestBody newTemperature: TemperatureInputModel
+    ): SirenEntity<TemperatureInfoOutputModel> {
+
         hvac.target = newTemperature.toTemperature()
         return TemperatureInfoOutputModel(hvac.current.value, hvac.target.value)
+            .toSirenObject(
+                links = listOf(TARGET_TEMPERATURE_LINK, CURRENT_TEMPERATURE_LINK),
+                actions = if (req.isFromOwner()) listOf(SET_POWER_STATE_ACTION) else emptyList()
+            )
     }
 
     @GetMapping(CURRENT_TEMPERATURE_PART)
-    fun getCurrentTemperature() = TemperatureOutputModel(hvac.current.value)
+    fun getCurrentTemperature(req: HttpServletRequest): SirenEntity<TemperatureOutputModel> =
+        TemperatureOutputModel(hvac.current.value).toSirenObject(
+            links = listOf(selfLink(CURRENT_TEMPERATURE_PATH), TARGET_TEMPERATURE_LINK)
+        )
 
     @GetMapping
-    fun getTemperature() = TemperatureInfoOutputModel(hvac.current.value, hvac.target.value)
+    fun getTemperature(): ResponseEntity<SirenEntity<TemperatureInfoOutputModel>> =
+        // We can explicitly override the produced Content-Type header, as shown here. In this case, the header will
+        // refer to the SIREN_MEDIA_TYPE, regardless of the client asking for it or, more generally, for JSON
+        ResponseEntity.ok()
+            .header("Content-Type", SIREN_MEDIA_TYPE)
+            .body(
+                TemperatureInfoOutputModel(hvac.current.value, hvac.target.value)
+                    .toSirenObject(
+                        links = listOf(selfLink(TEMPERATURE_PATH), CURRENT_TEMPERATURE_LINK, TARGET_TEMPERATURE_LINK, POWER_STATE_LINK),
+                        actions = listOf(SET_TARGET_TEMPERATURE_ACTION)
+                    )
+            )
 }

@@ -7,6 +7,7 @@ import isel.leic.daw.hvac.common.authorization.isFromOwner
 import isel.leic.daw.hvac.common.model.Hvac
 import isel.leic.daw.hvac.state.POWER_STATE_LINK
 import isel.leic.daw.hvac.state.SET_POWER_STATE_ACTION
+import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -35,10 +36,14 @@ class TemperatureController(private val hvac: Hvac) {
         )
 
     @GetMapping(TARGET_TEMPERATURE_PART)
-    fun getTargetTemperature(req: HttpServletRequest): SirenEntity<TemperatureOutputModel> =
-        TemperatureOutputModel(hvac.target.value).toSirenObject(
-            links = listOf(selfLink(TARGET_TEMPERATURE_PATH)),
-            actions = if (req.isFromOwner()) listOf(SET_TARGET_TEMPERATURE_ACTION) else emptyList()
+    fun getTargetTemperature(req: HttpServletRequest) = ResponseEntity
+        .ok()
+        .allow(HttpMethod.GET, HttpMethod.PUT)
+        .body(
+            TemperatureOutputModel(hvac.target.value).toSirenObject(
+                links = listOf(selfLink(TARGET_TEMPERATURE_PATH)),
+                actions = if (req.isFromOwner()) listOf(SET_TARGET_TEMPERATURE_ACTION) else emptyList()
+            )
         )
 
     @RestrictedAccess
@@ -57,7 +62,7 @@ class TemperatureController(private val hvac: Hvac) {
     }
 
     @GetMapping(CURRENT_TEMPERATURE_PART)
-    fun getCurrentTemperature(req: HttpServletRequest): SirenEntity<TemperatureOutputModel> =
+    fun getCurrentTemperature(req: HttpServletRequest) =
         TemperatureOutputModel(hvac.current.value).toSirenObject(
             links = listOf(selfLink(CURRENT_TEMPERATURE_PATH), TARGET_TEMPERATURE_LINK)
         )

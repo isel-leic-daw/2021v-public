@@ -9,6 +9,7 @@ import java.net.URI
 
 const val APPLICATION_TYPE = "application"
 const val SIREN_SUBTYPE = "vnd.siren+json"
+
 const val SIREN_MEDIA_TYPE = "${APPLICATION_TYPE}/${SIREN_SUBTYPE}"
 
 /**

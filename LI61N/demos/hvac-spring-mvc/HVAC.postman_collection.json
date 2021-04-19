@@ -15,7 +15,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
+								"value": "application/json-home",
 								"type": "text"
 							}
 						],
@@ -117,6 +117,31 @@
 					"response": []
 				},
 				{
+					"name": "/temperature/current",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/vnd.siren+json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/temperature/current",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"temperature",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/temperature/target",
 					"request": {
 						"method": "GET",
@@ -211,7 +236,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
+								"value": "application/json-home",
 								"type": "text"
 							}
 						],
@@ -313,6 +338,31 @@
 					"response": []
 				},
 				{
+					"name": "/temperature/current",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/vnd.siren+json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/temperature/current",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"temperature",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/temperature/target",
 					"request": {
 						"method": "GET",
@@ -320,7 +370,7 @@
 							{
 								"key": "Accept",
 								"type": "text",
-								"value": "application/json"
+								"value": "application/vnd.siren+json"
 							}
 						],
 						"url": {
@@ -419,7 +469,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
+								"value": "application/json-home",
 								"type": "text"
 							}
 						],
@@ -443,7 +493,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
+								"value": "application/xml, application/json",
 								"type": "text"
 							}
 						],
@@ -504,7 +554,8 @@
 							{
 								"key": "Accept",
 								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -521,15 +572,39 @@
 					"response": []
 				},
 				{
+					"name": "/temperature/current",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/vnd.siren+json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/temperature/current",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"temperature",
+								"current"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/temperature/target",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
-								"key": "",
+								"key": "Accept",
 								"type": "text",
-								"value": "",
-								"disabled": true
+								"value": "application/vnd.siren+json"
 							}
 						],
 						"url": {
@@ -541,13 +616,6 @@
 							"path": [
 								"temperature",
 								"target"
-							],
-							"query": [
-								{
-									"key": "Accept",
-									"value": "",
-									"disabled": true
-								}
 							]
 						}
 					},
@@ -572,7 +640,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"value\": 45\n}"
+							"raw": "{\n\t\"value\": 40\n}"
 						},
 						"url": {
 							"raw": "localhost:8080/temperature/target",

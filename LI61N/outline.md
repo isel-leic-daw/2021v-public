@@ -116,3 +116,26 @@ Lecturer: Paulo Pereira
   * [HTTP Status Code registry](http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
   * [IANA Media Types Registry](https://www.iana.org/assignments/media-types/media-types.xhtml)
   * ["REST"](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
+
+### 19/04/2021 - Web API design, continued
+* Hypermedia, continuation
+  * Concept and motivation, revisited
+  * [Web Linking](https://tools.ietf.org/html/rfc8288), revisited
+  * Hypermedia types, continued
+    * [Siren](https://github.com/kevinswiber/siren), revisited
+    * [JSON Home](https://mnot.github.io/I-D/json-home/): purpose and motivation
+    * Other media types (for reference):
+      * [HAL](https://tools.ietf.org/html/draft-kelly-json-hal-08), [HAL-forms](https://rwcbook.github.io/hal-forms/), [Collection+JSON](http://amundsen.com/media-types/collection/), [JSON API](https://jsonapi.org/), [JSON Patch](http://jsonpatch.com/)
+* The HTTP Protocol, revisited
+  * [Allow header](https://tools.ietf.org/html/rfc7231#section-7.4.1)
+  * HTTP Caching
+    * Headers [Cache-Control](https://tools.ietf.org/html/rfc7234#section-5.2), [ETag](https://tools.ietf.org/html/rfc7232#section-2.3), [Vary](https://tools.ietf.org/html/rfc7231#section-7.1.4)
+    * Conditional requests: headers [If-None-Match](https://tools.ietf.org/html/rfc7232#section-3.2) e [If-Modified-Since](https://tools.ietf.org/html/rfc7232#section-3.3)
+* Documentation:
+  * ["Designing evolvable Web APIs: Chapter 6"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/ch06.html)
+  * ["Designing evolvable Web APIs: Chapter 8"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/ch08.html)
+  * ["REST APIs must be hypertext-driven"](https://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven)
+* For reference:
+  * [IANA Link Relations Registry](https://www.iana.org/assignments/link-relations/link-relations.xhtml)
+  * [HTTP Caching](https://tools.ietf.org/html/rfc7234)
+  * [HTTP Conditional Requests](https://tools.ietf.org/html/rfc7232)

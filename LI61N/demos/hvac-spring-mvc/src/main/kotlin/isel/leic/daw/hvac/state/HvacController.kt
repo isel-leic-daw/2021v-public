@@ -5,6 +5,7 @@ import isel.leic.daw.hvac.common.authorization.ProtectedResource
 import isel.leic.daw.hvac.common.authorization.RestrictedAccess
 import isel.leic.daw.hvac.common.authorization.isFromOwner
 import isel.leic.daw.hvac.common.model.Hvac
+import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -33,8 +34,10 @@ class HvacStateController(private val hvac: Hvac) {
         )
 
     @GetMapping(POWER_STATE_PART)
-    fun getPowerState(req: HttpServletRequest) =
-            PowerStateOutputModel(hvac.power.name).toSirenObject(req.isFromOwner())
+    fun getPowerState(req: HttpServletRequest) = ResponseEntity
+        .ok()
+        .allow(HttpMethod.GET, HttpMethod.PUT)
+        .body(PowerStateOutputModel(hvac.power.name).toSirenObject(req.isFromOwner()))
 
     @RestrictedAccess
     @PutMapping(POWER_STATE_PART)

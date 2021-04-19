@@ -125,7 +125,7 @@ Lecturer: Paulo Pereira
     * [Siren](https://github.com/kevinswiber/siren), revisited
     * [JSON Home](https://mnot.github.io/I-D/json-home/): purpose and motivation
     * Other media types (for reference):
-      * [HAL](https://tools.ietf.org/html/draft-kelly-json-hal-08), [HAL-forms](https://rwcbook.github.io/hal-forms/), [Collection+JSON](http://amundsen.com/media-types/collection/), [JSON API](https://jsonapi.org/), [JSON Patch](http://jsonpatch.com/)
+      * [HAL](https://stateless.group/hal_specification.html), [HAL-forms](https://rwcbook.github.io/hal-forms/), [Collection+JSON](http://amundsen.com/media-types/collection/), [JSON API](https://jsonapi.org/), [JSON Patch](http://jsonpatch.com/)
 * The HTTP Protocol, revisited
   * [Allow header](https://tools.ietf.org/html/rfc7231#section-7.4.1)
   * HTTP Caching

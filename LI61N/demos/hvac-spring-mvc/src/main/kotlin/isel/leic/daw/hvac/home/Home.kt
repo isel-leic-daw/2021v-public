@@ -13,8 +13,7 @@ const val SECONDS_IN_A_DAY: Long = 60 * 60 * 24
 @RestController
 class Home {
 
-    // TODO: This deserves a DSL
-    @GetMapping(value = [HVAC_PATH], produces = [JSON_HOME_MEDIA_TYPE])
+    @GetMapping(produces = [JSON_HOME_MEDIA_TYPE])
     fun getNavigation(req: HttpServletRequest): ResponseEntity<Navigation> = ResponseEntity
         .ok()
         .cacheControl(CacheControl.maxAge(SECONDS_IN_A_DAY, TimeUnit.SECONDS).cachePrivate())
@@ -35,5 +34,23 @@ class Home {
                         temperature = NavigationLink(href = TEMPERATURE_PATH),
                 )
             )
+            // TODO: This deserves a DSL (work in progress)
+            /*
+            navigation {
+
+                api {
+                    title = "HVAC Web API"
+                    links = mapOf(
+                        "author" to URI("mailto:palbp@cc.isel.ipl.pt"),
+                        "describedBy" to URI("/api-docs")
+                    )
+                }
+
+                resources {
+                    power_state = NavigationLink(href = POWER_STATE_PATH)
+                    temperature = NavigationLink(href = TEMPERATURE_PATH)
+                }
+            }
+             */
         )
 }

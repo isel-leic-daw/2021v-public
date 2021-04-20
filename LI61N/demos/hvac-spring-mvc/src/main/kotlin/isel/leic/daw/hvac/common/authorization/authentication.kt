@@ -1,10 +1,10 @@
 package isel.leic.daw.hvac.common.authorization
 
-import isel.leic.daw.hvac.common.RequestLoggingFilter
 import org.slf4j.LoggerFactory
-import org.springframework.core.annotation.Order
+import org.springframework.http.HttpHeaders
 import org.springframework.stereotype.Component
 import org.springframework.util.Base64Utils
+import org.springframework.util.DigestUtils
 import javax.servlet.Filter
 import javax.servlet.FilterChain
 import javax.servlet.ServletRequest
@@ -26,20 +26,30 @@ class Owner(name: String) : UserInfo(name)
 
 const val USER_ATTRIBUTE_KEY = "user-attribute"
 const val BASIC_SCHEME = "Basic"
-const val CHALLENGE_HEADER = "WWW-Authenticate"
 
 /**
  * Implementation of our simplistic authentication scheme
  *
- * @param challengeResponse the content of the Authorization Header (the challenge response)
+ * @param challengeResponse the content of the Authorization Header (tØØhe challenge response)
  * @return  the [UserInfo] instance representing the user role, or null if the credentials are invalid
  */
 fun verifyBasicSchemeCredentials(challengeResponse: String): UserInfo? {
 
-    fun verifyUserCredentials(userId: String, pwd: String) = when {
-        userId == "Paulo" && pwd == "NotAnActualSecret" -> Owner(userId)
-        userId == "Pedro" && pwd == "NotASecretEither" -> Guest(userId)
-        else -> null
+    val pretenseUserDB = mapOf(
+        "Paulo" to Pair(Owner("Paulo"), DigestUtils.md5Digest("NotAnActualSecret".encodeToByteArray())),
+        "Pedro" to Pair(Guest("Pedro"), DigestUtils.md5Digest("NotASecretEither".encodeToByteArray())),
+        "TestOwner" to Pair(Owner("TestOwner"), DigestUtils.md5Digest("TestOwner".encodeToByteArray())),
+        "TestGuest" to Pair(Guest("TestGuest"), DigestUtils.md5Digest("TestGuest".encodeToByteArray()))
+    )
+
+    // Note: This is not a real implementation of a user credential's verification procedure
+    fun verifyUserCredentials(userId: String, pwd: String): UserInfo? {
+        val credentials = pretenseUserDB[userId]
+        return when {
+            credentials == null -> null
+            credentials.second.contentEquals(DigestUtils.md5Digest(pwd.encodeToByteArray())) -> credentials.first
+            else -> null
+        }
     }
 
     val trimmedChallengeResponse = challengeResponse.trim()
@@ -76,7 +86,7 @@ class AuthenticationFilter(private val credentialsVerifier: CredentialsVerifier)
             logger.info("User credentials are invalid or were not provided. Issuing challenge.")
             val httpResponse = response as HttpServletResponse
             httpResponse.status = HttpServletResponse.SC_UNAUTHORIZED
-            httpResponse.addHeader(CHALLENGE_HEADER, "$BASIC_SCHEME realm=\"hvac\"")
+            httpResponse.addHeader(HttpHeaders.WWW_AUTHENTICATE, "$BASIC_SCHEME realm=\"hvac\"")
         }
     }
 }

@@ -18,6 +18,7 @@ class Home {
         .ok()
         .cacheControl(CacheControl.maxAge(SECONDS_IN_A_DAY, TimeUnit.SECONDS).cachePrivate())
         .body(
+            /*
             Navigation(
                 ApiInfo("HVAC Web API", mapOf(
                         "author" to URI("mailto:palbp@cc.isel.ipl.pt"),
@@ -34,8 +35,8 @@ class Home {
                         temperature = NavigationLink(href = TEMPERATURE_PATH),
                 )
             )
+                    */
             // TODO: This deserves a DSL (work in progress)
-            /*
             navigation {
 
                 api {
@@ -51,6 +52,5 @@ class Home {
                     temperature = NavigationLink(href = TEMPERATURE_PATH)
                 }
             }
-             */
         )
 }

@@ -15,7 +15,7 @@ During the presentation mention the parts of the documentation where more inform
 
 ## Schedule
 
-### LI51D
+### LI61D
 
 Work in progress
 
@@ -44,6 +44,23 @@ Work in progress
 | [daw-project-li61d-g31](https://github.com/isel-leic-daw/daw-project-li61d-g31)   | 2021-04-27 (Tuesday) 15:45
 
 
-### LI51N
+### LI61N
 
-To be defined
+| Group                                                                             | Schedule
+:-----------------------------------------------------------------------------------|-----------------
+| [daw-project-li61n-g01](https://github.com/isel-leic-daw/daw-project-li61n-g01)   | 2021-04-26 (Monday) 20:00
+| [daw-project-li61n-g06](https://github.com/isel-leic-daw/daw-project-li61n-g06)   | 2021-04-26 (Monday) 20:15
+| [daw-project-li61n-g10](https://github.com/isel-leic-daw/daw-project-li61d-g10)   | 2021-04-26 (Monday) 20:30
+| [daw-project-li61n-g12](https://github.com/isel-leic-daw/daw-project-li61d-g12)   | 2021-04-26 (Monday) 20:45
+| [daw-project-li61n-g13](https://github.com/isel-leic-daw/daw-project-li61d-g13)   | 2021-04-26 (Monday) 21:00
+| [daw-project-li61n-g17](https://github.com/isel-leic-daw/daw-project-li61d-g17)   | 2021-04-26 (Monday) 21:15
+| [daw-project-li61n-g19](https://github.com/isel-leic-daw/daw-project-li61d-g19)   | 2021-04-26 (Monday) 21:45
+| [daw-project-li61n-g24](https://github.com/isel-leic-daw/daw-project-li61d-g24)   | 2021-04-26 (Monday) 22:00
+| [daw-project-li61n-g25](https://github.com/isel-leic-daw/daw-project-li61d-g25)   | 2021-04-26 (Monday) 22:15
+| [daw-project-li61n-g26](https://github.com/isel-leic-daw/daw-project-li61d-g26)   | 2021-04-26 (Monday) 22:30
+| [daw-project-li61n-g40](https://github.com/isel-leic-daw/daw-project-li61d-g40)   | 2021-04-26 (Monday) 22:45
+| [daw-project-li61n-g7](https://github.com/isel-leic-daw/daw-project-li61d-g7)     | 2021-04-28 (Wednesday) 18:30
+| [daw-project-li61n-g8](https://github.com/isel-leic-daw/daw-project-li61d-g8)     | 2021-04-28 (Wednesday) 18:45
+| [daw-project-li61n-g9](https://github.com/isel-leic-daw/daw-project-li61d-g9)     | 2021-04-28 (Wednesday) 19:00
+| [daw-project-li61n-g18](https://github.com/isel-leic-daw/daw-project-li61d-g18)   | 2021-04-28 (Wednesday) 19:15
+

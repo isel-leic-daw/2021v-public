@@ -50,23 +50,6 @@ Lecturer: Paulo Pereira
     * [MVC Controllers](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-controller)
 * Demo with the creation of an HTTP API for the HVAC controller application ([here](https://github.com/isel-leic-daw/2021v-public/tree/7901b94efec84bd66587bf6ab40fa538e1b4be81/LI61N/demos/hvac-spring-mvc))
 
-### 22/03/2021 - Spring and Spring MVC
-* Spring
-  * Main elements of the programming model 
-    * [Application Context](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-basics) and [AnnotationConfigApplicationContext](https://docs.spring.io/spring-framework/docs/5.3.5/javadoc-api/org/springframework/web/context/support/AnnotationConfigWebApplicationContext.html)
-    * [Beans](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-definition) and [Bean scopes](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-factory-scopes)
-  * [Constructor based dependency injection](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-constructor-injection)
-  * [Resolving dependencies through classpath scanning](https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#beans-classpath-scanning)
-* Demo illustrating the use of `AnnotationConfigApplicationContext` in contrast to `@SpringBootApplication`
-  * The demo codebase in its final form is [here](https://github.com/isel-leic-daw/2021v-public/tree/main/LI61N/demos/hvac-spring)
-* Spring MVC, introduction
-  * Servlet container architecture (overview): servlets and filters
-  * Spring MVC architecture overview ([diagram](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mvc.html#mvc-servlet))
-    * [Spring MVC application context](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-servlet-context-hierarchy)
-    * [DispatcherServlet](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-servlet)
-    * [MVC Controllers](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-controller)
-* Demo with the creation of an HTTP API for the HVAC controller application ([here](https://github.com/isel-leic-daw/2021v-public/tree/7901b94efec84bd66587bf6ab40fa538e1b4be81/LI61N/demos/hvac-spring-mvc))
-
 [Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=zknHDRuc91s&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=3)
 
 ### 07/04/2021 - Web API design, introduction
@@ -90,6 +73,8 @@ Lecturer: Paulo Pereira
   * ["Designing evolvable Web APIs: Chapter 2"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/ch02.html)
 * For reference:
   * [HTTP protocol](https://tools.ietf.org/html/rfc7230)
+
+[Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=zknHDRuc91s&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=4)
 
 ### 12/04/2021 - Web API design, continued
 * The HTTP protocol, continued
@@ -117,6 +102,8 @@ Lecturer: Paulo Pereira
   * [IANA Media Types Registry](https://www.iana.org/assignments/media-types/media-types.xhtml)
   * ["REST"](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
 
+[Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=zknHDRuc91s&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=5)
+
 ### 19/04/2021 - Web API design, continued
 * Hypermedia, continuation
   * Concept and motivation, revisited
@@ -139,3 +126,5 @@ Lecturer: Paulo Pereira
   * [IANA Link Relations Registry](https://www.iana.org/assignments/link-relations/link-relations.xhtml)
   * [HTTP Caching](https://tools.ietf.org/html/rfc7234)
   * [HTTP Conditional Requests](https://tools.ietf.org/html/rfc7232)
+
+[Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=zknHDRuc91s&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=6)

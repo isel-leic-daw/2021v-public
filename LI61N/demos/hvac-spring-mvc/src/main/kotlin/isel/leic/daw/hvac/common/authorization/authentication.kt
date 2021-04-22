@@ -28,12 +28,10 @@ const val USER_ATTRIBUTE_KEY = "user-attribute"
 const val BASIC_SCHEME = "Basic"
 
 /**
- * Implementation of our simplistic authentication scheme
- *
- * @param challengeResponse the content of the Authorization Header (tØØhe challenge response)
- * @return  the [UserInfo] instance representing the user role, or null if the credentials are invalid
+ * Implementation of our simplistic authentication scheme.
+ * @return  the function used to verify the user's credentials
  */
-fun verifyBasicSchemeCredentials(challengeResponse: String): UserInfo? {
+fun getBasicCredentialsVerifier(): CredentialsVerifier {
 
     val pretenseUserDB = mapOf(
         "Paulo" to Pair(Owner("Paulo"), DigestUtils.md5Digest("NotAnActualSecret".encodeToByteArray())),
@@ -52,14 +50,17 @@ fun verifyBasicSchemeCredentials(challengeResponse: String): UserInfo? {
         }
     }
 
-    val trimmedChallengeResponse = challengeResponse.trim()
-    return if (trimmedChallengeResponse.startsWith(BASIC_SCHEME, ignoreCase = true)) {
-        val userCredentials = trimmedChallengeResponse.drop(BASIC_SCHEME.length + 1).trim()
-        val (userId, pwd) = String(Base64Utils.decodeFromString(userCredentials)).split(':')
-        verifyUserCredentials(userId, pwd)
-    }
-    else {
-        null
+    return {
+        val trimmedChallengeResponse = it.trim()
+
+        if (trimmedChallengeResponse.startsWith(BASIC_SCHEME, ignoreCase = true)) {
+            val userCredentials = trimmedChallengeResponse.drop(BASIC_SCHEME.length + 1).trim()
+            val (userId, pwd) = String(Base64Utils.decodeFromString(userCredentials)).split(':')
+            verifyUserCredentials(userId, pwd)
+        }
+        else {
+            null
+        }
     }
 }
 

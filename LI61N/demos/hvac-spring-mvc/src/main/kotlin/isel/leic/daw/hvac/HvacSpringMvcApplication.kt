@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import isel.leic.daw.hvac.common.APPLICATION_TYPE
 import isel.leic.daw.hvac.common.authorization.AccessControlInterceptor
 import isel.leic.daw.hvac.common.authorization.UserInfo
-import isel.leic.daw.hvac.common.authorization.verifyBasicSchemeCredentials
+import isel.leic.daw.hvac.common.authorization.getBasicCredentialsVerifier
 import isel.leic.daw.hvac.home.JSON_HOME_SUBTYPE
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -73,7 +73,7 @@ class HvacSpringMvcApplication {
 	 * Provides the implementation of the user credentials verification procedure
 	 */
 	@Bean
-	fun authenticationProvider(): Function1<String, UserInfo?> = ::verifyBasicSchemeCredentials
+	fun authenticationProvider(): Function1<String, UserInfo?> = getBasicCredentialsVerifier()
 }
 
 fun main(args: Array<String>) {

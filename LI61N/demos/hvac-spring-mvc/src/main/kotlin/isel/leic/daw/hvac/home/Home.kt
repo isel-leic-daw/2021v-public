@@ -1,10 +1,13 @@
 package isel.leic.daw.hvac.home
 
-import isel.leic.daw.hvac.common.*
-import org.springframework.http.*
+import isel.leic.daw.hvac.common.POWER_STATE_PATH
+import isel.leic.daw.hvac.common.TEMPERATURE_PATH
+import org.springframework.http.CacheControl
+import org.springframework.http.HttpMethod
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
-import java.net.URI
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletRequest
 
@@ -18,38 +21,25 @@ class Home {
         .ok()
         .cacheControl(CacheControl.maxAge(SECONDS_IN_A_DAY, TimeUnit.SECONDS).cachePrivate())
         .body(
-            /*
-            Navigation(
-                ApiInfo("HVAC Web API", mapOf(
-                        "author" to URI("mailto:palbp@cc.isel.ipl.pt"),
-                        "describedBy" to URI("/api-docs"))
-                ),
-                Resources(
-                        power_state = NavigationLink(
-                            href = POWER_STATE_PATH,
-                            hints = Hints(
-                                allow = listOf(HttpMethod.GET, HttpMethod.PUT),
-                                 acceptPut = listOf(MediaType.APPLICATION_JSON)
-                            )
-                        ),
-                        temperature = NavigationLink(href = TEMPERATURE_PATH),
-                )
-            )
-                    */
-            // TODO: This deserves a DSL (work in progress)
+            // Here's a simple DSL, just for the fun of it =)
             navigation {
 
                 api {
                     title = "HVAC Web API"
-                    links = mapOf(
-                        "author" to URI("mailto:palbp@cc.isel.ipl.pt"),
-                        "describedBy" to URI("/api-docs")
+                    links(
+                        "author" to "mailto:palbp@cc.isel.ipl.pt",
+                        "describedBy" to "/api-docs"
                     )
                 }
 
                 resources {
-                    power_state = NavigationLink(href = POWER_STATE_PATH)
-                    temperature = NavigationLink(href = TEMPERATURE_PATH)
+                    power_state = link(POWER_STATE_PATH) {
+                        hints {
+                            allow(HttpMethod.GET, HttpMethod.PUT)
+                            acceptPut(MediaType.APPLICATION_JSON)
+                        }
+                    }
+                    temperature = link(TEMPERATURE_PATH)
                 }
             }
         )

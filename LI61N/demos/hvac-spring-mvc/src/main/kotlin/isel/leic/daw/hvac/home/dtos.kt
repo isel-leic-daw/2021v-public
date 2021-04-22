@@ -8,9 +8,6 @@ import java.net.URI
 const val JSON_HOME_SUBTYPE = "json-home"
 const val JSON_HOME_MEDIA_TYPE = "${APPLICATION_TYPE}/${JSON_HOME_SUBTYPE}"
 
-val MediaType.APPLICATION_JSON_HOME
-    get() = MediaType(JSON_HOME_MEDIA_TYPE)
-
 /**
  * Output model used to describe the API's navigation links, as specified in [json-home](https://mnot.github.io/I-D/json-home/).
  */
@@ -33,11 +30,11 @@ data class ApiInfo(val title: String, val links: Map<String, URI>?)
  * Used in the [Navigation] output model and contains the link to a resource.
  */
 data class NavigationLink(
-    val href: String,
+    val href: URI,
     val hrefTemplate: String? = null,
     val hrefVars: Map<String, String>? = null,
     val hints: Hints? = null
-    )
+)
 
 /**
  * An extremely minimalistic version of the Hints property.

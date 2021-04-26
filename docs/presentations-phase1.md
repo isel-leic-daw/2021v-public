@@ -35,14 +35,12 @@ Work in progress
 | [daw-project-li61d-g16](https://github.com/isel-leic-daw/daw-project-li61d-g16)   | 2021-04-28 (Wednesday) 12:30
 | [daw-project-li61d-g20](https://github.com/isel-leic-daw/daw-project-li61d-g20)   | 2021-04-28 (Wednesday) 12:45
 | [daw-project-li61d-g21](https://github.com/isel-leic-daw/daw-project-li61d-g21)   | 2021-04-28 (Wednesday) 13:00
-| [daw-project-li61d-g22](https://github.com/isel-leic-daw/daw-project-li61d-g22)   | 2021-04-28 (Wednesday) 13:15
+| [daw-project-li61d-g31](https://github.com/isel-leic-daw/daw-project-li61d-g31)   | 2021-04-28 (Wednesday) 13:15
 | [daw-project-li61d-g23](https://github.com/isel-leic-daw/daw-project-li61d-g23)   | 2021-04-28 (Wednesday) 13:30
 | [daw-project-li61d-g27](https://github.com/isel-leic-daw/daw-project-li61d-g27)   | 2021-04-28 (Wednesday) 13:45
 | [daw-project-li61d-g28](https://github.com/isel-leic-daw/daw-project-li61d-g28)   | 2021-04-27 (Tuesday) 15:00
 | [daw-project-li61d-g29](https://github.com/isel-leic-daw/daw-project-li61d-g29)   | 2021-04-27 (Tuesday) 15:15
 | [daw-project-li61d-g30](https://github.com/isel-leic-daw/daw-project-li61d-g30)   | 2021-04-27 (Tuesday) 15:30
-| [daw-project-li61d-g31](https://github.com/isel-leic-daw/daw-project-li61d-g31)   | 2021-04-27 (Tuesday) 15:45
-
 
 ### LI61N
 

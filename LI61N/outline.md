@@ -128,3 +128,25 @@ Lecturer: Paulo Pereira
   * [HTTP Conditional Requests](https://tools.ietf.org/html/rfc7232)
 
 [Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=zknHDRuc91s&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=6)
+
+### 03/05/2021 - Creating a Web UI, introduction (preview)
+* Rendering approaches for web based UIs, introduction
+  * Static Rendering, Server Side Rendering, Client Side Rendering, Hybrid approaches
+  * Motivations and tradeoffs
+  * ["Rendering on the Web"](https://developers.google.com/web/updates/2019/02/rendering-on-the-web)
+* The React framework: Introduction
+  * Motivation: creating Single-Page applications (SPA)
+  * [Getting started](https://reactjs.org/docs/create-a-new-react-app.html)
+  * Bootstrapping a React based frontend
+    * [Create React App](https://create-react-app.dev/docs/getting-started/)
+    * [TypeScript for JavaScript Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
+    * [TypeScript fpr Java/C# Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes-oop.html)
+* React programming model and core concepts:
+  * [JSX](https://reactjs.org/docs/introducing-jsx.html)
+  * [Elements](https://reactjs.org/docs/rendering-elements.html)
+  * [Components and props](https://reactjs.org/docs/components-and-props.html)
+* For reference:
+  * [Typescript Playground](https://www.typescriptlang.org/play)
+  * [Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)
+  * [Using React in VS Code](https://code.visualstudio.com/docs/nodejs/reactjs-tutorial)
+  * [Semantic UI](https://semantic-ui.com/)

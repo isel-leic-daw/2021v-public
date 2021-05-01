@@ -1,9 +1,20 @@
-function addMessage(msg: string) {
-  const elem = document.createElement('div')
-  elem.innerText = msg
-  document.body.appendChild(elem)
-}
+/** @jsx createElement */
+import { createElement } from './view'
+import { app } from './main'
 
-addMessage("Hello World using TypeScript")
-addMessage("Another message")
-addMessage("And yet anothe message")
+const body = document.body
+
+// Using `createElement` directly
+body.appendChild(
+  createElement('div', {},
+    createElement('ul', {},
+      createElement('li', {}, 'item 1'),
+      createElement('li', {}, 'item 2'),
+      createElement('li', {}, 'item 3')
+    )
+  )
+)
+
+body.appendChild(
+  app()
+)

@@ -1,3 +1,2 @@
-import {add} from './lib1.js'
-
-console.log(`index.js: top-level running, 2 + 2 = ${add(2,2)}`)
+const msg = "Hello world"
+console.log("Hello from JS in different resource")

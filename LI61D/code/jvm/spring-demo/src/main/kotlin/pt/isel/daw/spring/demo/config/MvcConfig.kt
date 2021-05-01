@@ -12,7 +12,6 @@ import pt.isel.daw.spring.demo.pipeline.argumentresolvers.ClientIpArgumentResolv
 import pt.isel.daw.spring.demo.pipeline.interceptors.ExampleInterceptor
 import pt.isel.daw.spring.demo.pipeline.messageconverters.UriToPngMessageConverter
 
-
 /*
  * Example MVC configuration
  */

@@ -32,14 +32,16 @@
   * Web linking and hypermedia.
 
 * W5, 2021-04-19
-  * The browser as an application execution platform. 
-  * Code loading - modules, bundling, HMR.
-  * Development-time building.
+  * HTTP conditional requests
+  * HTTP caching
 
 * W6, 2021-04-26
   * Student presentations.
  
 * W7, 2021-05-03
+  * The browser as an application execution platform. 
+  * Code loading - modules, bundling, HMR.  
+  * Development-time building.
   * The browser's Document Object Model (DOM). 
   * The browsers fetch API.
   * Usage examples

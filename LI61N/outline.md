@@ -142,7 +142,7 @@ Lecturer: Paulo Pereira
     * [TypeScript for JavaScript Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
     * [TypeScript fpr Java/C# Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes-oop.html)
 * React programming model and core concepts:
-  * [JSX](https://reactjs.org/docs/introducing-jsx.html)
+  * [JSX](https://reactjs.org/docs/introducing-jsx.html) (or [TSX](https://www.typescriptlang.org/docs/handbook/jsx.html))
   * [Elements](https://reactjs.org/docs/rendering-elements.html)
   * [Components and props](https://reactjs.org/docs/components-and-props.html)
 * For reference:
@@ -150,3 +150,7 @@ Lecturer: Paulo Pereira
   * [Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)
   * [Using React in VS Code](https://code.visualstudio.com/docs/nodejs/reactjs-tutorial)
   * [Semantic UI](https://semantic-ui.com/)
+* Additional resources:
+  * [Semantic UI React](https://react.semantic-ui.com/usage)
+  * [Storybook](https://storybook.js.org/docs/react/get-started/introduction)
+  * [Chrome React Dev Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)

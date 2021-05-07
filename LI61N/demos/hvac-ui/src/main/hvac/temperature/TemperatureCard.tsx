@@ -13,7 +13,8 @@ export interface TemperatureCardProps {
   label: string,
   value: number,
   disabled?: boolean,
-  editable?: boolean
+  editable?: boolean,
+  handleSetTemperature?: (newTemperature: number) => void
 }
 
 /**
@@ -26,7 +27,7 @@ export function TemperatureCard(props: TemperatureCardProps) {
         <TemperatureDisplay { ... props } />
       </div>
       <div className="extra content">
-        <TemperatureEditor { ... props } />
+        <TemperatureEditor { ...props} editable={props.editable || false} submitChange={props.handleSetTemperature} />
       </div>
     </div>
   )

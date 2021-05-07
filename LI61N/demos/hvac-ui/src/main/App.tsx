@@ -1,8 +1,12 @@
 import logo from './logo.svg'
 import './App.css'
 import ControlPage from './hvac/ControlPage'
-import LoginPage from './login/LoginPage'
 
+/**
+ * The application's splash page, displayed during startup.
+ * @returns The React Element used to render the page.
+ */
+ // eslint-disable-next-line
 function SplashPage() {
   return (
     <header className="App-header">
@@ -12,8 +16,10 @@ function SplashPage() {
   )
 }
 
+/**
+ * The application entry point.
+ */
 function App() {
-
   return (
     <div className="App">
       <ControlPage />

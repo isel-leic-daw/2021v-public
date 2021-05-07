@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react'
+import React, { MouseEvent, useState } from 'react'
 import { PowerButton, PowerState, PowerButtonProps } from './PowerButton'
 import { TemperatureCard } from './temperature/TemperatureCard'
 import './ControlPage.css'
@@ -21,7 +21,8 @@ function PageHeader(props: PowerButtonProps) {
 
 interface TemperatureProps {
   currentTemperature: number,
-  targetTemperature: number
+  targetTemperature: number,
+  handleTemperatureChange?: (newTemperature: number) => void
 }
 
 /**
@@ -34,7 +35,9 @@ function PageBody(props: TemperatureProps) {
     <div className="ui text container Control-body">
       <div className="ui centered cards">
         <TemperatureCard value={props.currentTemperature} label="Current" />
-        <TemperatureCard value={props.targetTemperature} label="Target" editable={true} disabled={false} />
+        <TemperatureCard value={props.targetTemperature} label="Target" 
+          editable={true} disabled={false} 
+          handleSetTemperature={props.handleTemperatureChange} />
       </div>
     </div>
   )
@@ -46,14 +49,33 @@ function PageBody(props: TemperatureProps) {
  */
 export default function ControlPage() {
   
+  const [powerState, setPowerState] = useState(PowerState.OFF)
+  const [temperatureState, setTemperatureState] = useState({ current: 21, target: 21 })
+
+  console.log(`ControlPage.render(): 
+    powerstate = ${JSON.stringify(powerState)} 
+    temperatureState = ${JSON.stringify(temperatureState)}`)
+
   function handlePowerToggle(evt: MouseEvent<HTMLButtonElement>): void {
-    console.log(evt.currentTarget)
+    // TODO: Actually interact with the Web API
+    const nextPowerState = powerState === PowerState.ON ? PowerState.OFF : PowerState.ON
+    setPowerState(nextPowerState)
+    console.log(`Powerstate is = ${powerState}. Changed it to ${nextPowerState}`)
+  }
+
+  function handleTargetTemperatureChange(newTemperature: number): void {
+    // TODO: Actually interact with the Web API
+    setTemperatureState( { current: temperatureState.current, target: newTemperature } )
+    console.log(`Target temperature is ${temperatureState.current}. Changed it to ${newTemperature}`)
   }
   
   return (
     <>
-      <PageHeader state={PowerState.OFF} onClick={handlePowerToggle} />
-      <PageBody currentTemperature={21} targetTemperature={21} />
+      <PageHeader state={powerState} onClick={handlePowerToggle} />
+      <PageBody 
+        currentTemperature={temperatureState.current} 
+        targetTemperature={temperatureState.target} 
+        handleTemperatureChange={handleTargetTemperatureChange} />
     </>
   )
 }

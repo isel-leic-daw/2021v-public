@@ -1,6 +1,5 @@
 import React, { MouseEventHandler } from 'react'
-
-export enum PowerState { ON = "ON", OFF = "OFF" }
+import { PowerState } from './hvacModel'
 
 /**
  * Contract to be supported by objects passed as props to the PowerButton component.

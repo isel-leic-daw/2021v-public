@@ -1,6 +1,7 @@
 
 import { TemperatureDisplay } from './TemperatureDisplay'
 import { TemperatureEditor } from './TemperatureEditor'
+import { Temperature } from '../hvacModel'
 
 /**
  * Contract to be supported by objects passed as props to the TemperatureCard component.
@@ -11,10 +12,10 @@ import { TemperatureEditor } from './TemperatureEditor'
  */
 export interface TemperatureCardProps {
   label: string,
-  value: number,
+  value?: Temperature,
   disabled?: boolean,
   editable?: boolean,
-  handleSetTemperature?: (newTemperature: number) => void
+  handleSetTemperature?: (newTemperature: Temperature) => void
 }
 
 /**
@@ -27,7 +28,10 @@ export function TemperatureCard(props: TemperatureCardProps) {
         <TemperatureDisplay { ... props } />
       </div>
       <div className="extra content">
-        <TemperatureEditor { ...props} editable={props.editable || false} submitChange={props.handleSetTemperature} />
+        <TemperatureEditor { ...props} 
+          disabled={props.disabled || !props.value} 
+          editable={props.editable || false} 
+          submitChange={props.handleSetTemperature} />
       </div>
     </div>
   )

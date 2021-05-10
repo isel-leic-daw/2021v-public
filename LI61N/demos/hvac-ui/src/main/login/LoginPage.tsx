@@ -3,6 +3,7 @@ import { UserSessionRepository } from "./UserSessionRepository";
 
 /**
  * Contract to be supported by objects passed as props to the LoginPage component.
+ * @property sessionRepo  - the user session repository
  */
 interface LoginPageProps {
   sessionRepo: UserSessionRepository
@@ -10,6 +11,7 @@ interface LoginPageProps {
 
 /**
  * The application's login page.
+ * @argument props - the page's props object.
  * @returns The React Element used to render the page.
  */
 export default function LoginPage(props: LoginPageProps) {

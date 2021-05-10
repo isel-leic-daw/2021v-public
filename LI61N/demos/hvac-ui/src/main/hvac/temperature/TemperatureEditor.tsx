@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react"
+import React, { useRef, useState } from 'react'
+import { Temperature } from '../hvacModel'
 
 /**
  * Contract to be supported by objects passed as props to the TemperatureEditor component.
@@ -8,10 +9,10 @@ import React, { useRef, useState } from "react"
  * @property  submitChange  - callback function used to signal that a new temperature value has been submitted by the user.
  */
 export interface TemperatureEditorProps {
-  value: number,
+  value?: Temperature,
   disabled?: boolean,
   editable?: boolean,
-  submitChange?: (newValue: number) => void
+  submitChange?: (newValue: Temperature) => void
 }
 
 /**
@@ -28,14 +29,15 @@ export function TemperatureEditor(props: TemperatureEditorProps) {
   const handleCancel = () => { setEditing(!editing) }
   const handleSubmit = () => { 
     setEditing(!editing); 
-    if (props.submitChange)
-      props.submitChange(+(temperatureInputRef.current?.value || props.value.toString())) 
+    if (props.submitChange && props.value)
+      props.submitChange(new Temperature(+(temperatureInputRef.current?.value || props.value.toString()))) 
   }
   
   function renderEditingMode()  {
+    const temperatureValue = props.value?.value
     return (
       <div className="ui mini input">
-        <input type="number" placeholder="Enter new value..." defaultValue={props.value} ref={temperatureInputRef} /> &nbsp;
+        <input type="number" placeholder="Enter new value..." defaultValue={temperatureValue} ref={temperatureInputRef} /> &nbsp;
         <div className="ui small basic icon buttons">
           <div className="ui red basic button" onClick={handleCancel}>
             <i className="close icon" />

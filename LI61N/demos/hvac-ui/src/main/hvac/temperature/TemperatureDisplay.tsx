@@ -1,3 +1,4 @@
+import { Temperature } from '../hvacModel'
 
 /**
  * Contract to be supported by objects passed as props to the TemperatureDisplay component.
@@ -6,7 +7,7 @@
  */
 export interface TemperatureDisplayProps {
   label: string,
-  value?: number
+  value?: Temperature
 }
 
 /**
@@ -18,7 +19,7 @@ export function TemperatureDisplay(props: TemperatureDisplayProps) {
   const { value, label } = props
   return (
     <div className="ui huge statistic">
-      <div className="value"> {value === 0 ? value : value || '--'}&deg;</div>
+      <div className="value"> {value ? value.value : '--'}&deg;</div>
       <div className="label"> {label} </div>
     </div>  
   )

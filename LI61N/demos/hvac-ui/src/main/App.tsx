@@ -1,6 +1,7 @@
 import logo from './logo.svg'
 import './App.css'
 import ControlPage from './hvac/ControlPage'
+import { getControlPageViewModel } from './hvac/ControlPageViewModel'
 
 /**
  * The application's splash page, displayed during startup.
@@ -22,7 +23,7 @@ function SplashPage() {
 function App() {
   return (
     <div className="App">
-      <ControlPage />
+      <ControlPage viewModel={getControlPageViewModel()} />
     </div>
   )
 }

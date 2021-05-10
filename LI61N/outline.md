@@ -129,7 +129,7 @@ Lecturer: Paulo Pereira
 
 [Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=zknHDRuc91s&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=6)
 
-### 03/05/2021 - Creating a Web UI, introduction (preview)
+### 03/05/2021 - Creating a Web UI, introduction
 * Rendering approaches for web based UIs, introduction
   * Static Rendering, Server Side Rendering, Client Side Rendering, Hybrid approaches
   * Motivations and tradeoffs
@@ -154,3 +154,26 @@ Lecturer: Paulo Pereira
   * [Semantic UI React](https://react.semantic-ui.com/usage)
   * [Storybook](https://storybook.js.org/docs/react/get-started/introduction)
   * [Chrome React Dev Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
+
+[Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=zknHDRuc91s&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=7)
+
+
+### 10/05/2021 - Creating a Web UI, React Hooks (preview)
+* The React framework, continued
+  * React's execution model
+    * For stateless components
+    * For statefull components, using React Hooks 
+    * Rendering, revisited
+      * [Reconciliation](https://reactjs.org/docs/reconciliation.html)
+  * React Hooks:
+    * Purpose and [motivation](https://reactjs.org/docs/hooks-intro.html#motivation)
+    * Hooks [useState](https://reactjs.org/docs/hooks-state.html), [useRef](https://reactjs.org/docs/hooks-reference.html#useref), [useEffect](https://reactjs.org/docs/hooks-effect.html) and [useCallback](https://reactjs.org/docs/hooks-reference.html#usecallback)
+    * Constraints in the use of Hooks: [Rules of Hooks](https://reactjs.org/docs/hooks-rules.html)
+* For reference:
+  * [A Complete Guide to useEffect](https://overreacted.io/a-complete-guide-to-useeffect/)
+  * [React as a UI Runtime](https://overreacted.io/react-as-a-ui-runtime/)
+  * [Fragments](https://reactjs.org/docs/fragments.html)
+* Additional resources:
+  * [Content on Declarative UI](http://intelligiblebabble.com/content-on-declarative-ui/)
+
+[Lecture Video (in Portuguese)](__coming soon__)

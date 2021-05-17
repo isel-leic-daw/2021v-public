@@ -158,7 +158,7 @@ Lecturer: Paulo Pereira
 [Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=zknHDRuc91s&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=7)
 
 
-### 10/05/2021 - Creating a Web UI, React Hooks (preview)
+### 10/05/2021 - Creating a Web UI with React Hooks
 * The React framework, continued
   * React's execution model
     * For stateless components
@@ -175,5 +175,18 @@ Lecturer: Paulo Pereira
   * [Fragments](https://reactjs.org/docs/fragments.html)
 * Additional resources:
   * [Content on Declarative UI](http://intelligiblebabble.com/content-on-declarative-ui/)
+
+[Lecture Video (in Portuguese)](__coming soon__)
+
+### 17/05/2021 - Creating a Web UI with React Hooks (continued)
+* State management in React, continued: revisiting props and state
+  * ["Thinking in React"](https://reactjs.org/docs/thinking-in-react.html)
+  * ["Lifting State Up](https://reactjs.org/docs/lifting-state-up.html)
+  * [Handling user input with controlled components](https://reactjs.org/docs/forms.html#controlled-components)
+* Client side routes
+  * Concept and motivation
+  * Declarative routing in React: [React Router](https://reactrouter.com/web/guides/quick-start)
+* Considerations on React application's architecure
+  * [Favoring composition](https://reactjs.org/docs/composition-vs-inheritance.html)
 
 [Lecture Video (in Portuguese)](__coming soon__)

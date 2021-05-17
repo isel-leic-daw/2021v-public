@@ -15,7 +15,7 @@ export namespace HvacControl {
    * @property viewModel  - the associated view model instance
    */
   type PageProps = {
-    viewModel: ViewModel,
+    service: Service,
     sessionRepo: UserSession.Repository,
     signOutRedirectRoute: string
   }
@@ -36,23 +36,23 @@ export namespace HvacControl {
     useEffect(() => { 
       async function loadPowerState() {
         console.log("Loading power state ...")
-        const currPowerState = await props.viewModel.getPowerState()
+        const currPowerState = await props.service.getPowerState()
         setPowerState(currPowerState)
       }
       console.log("Running power state effect ...")
       if (!powerState) loadPowerState()
-    }, [props.viewModel, powerState])
+    }, [props.service, powerState])
 
 
     useEffect(() => {
       async function loadTemperature() {
         console.log("Loading temperature ...")
-        const currTemperature = await props.viewModel.getTemperature()
+        const currTemperature = await props.service.getTemperature()
         setTemperatureState(currTemperature)
       }
       console.log("Running temperature state effect ...")
       if (!temperatureState) loadTemperature()
-    }, [props.viewModel, temperatureState])
+    }, [props.service, temperatureState])
 
     console.log(`ControlPage.render(): 
       powerstate = ${JSON.stringify(powerState)} 
@@ -61,7 +61,7 @@ export namespace HvacControl {
     async function handlePowerToggle(): Promise<void> {
       if (powerState) {
         setPowerState(undefined)
-        const nextPowerState = await props.viewModel.setPowerState(toggle(powerState))
+        const nextPowerState = await props.service.setPowerState(toggle(powerState))
         setPowerState(nextPowerState)
       }
     }
@@ -69,7 +69,7 @@ export namespace HvacControl {
     async function handleTargetTemperatureChange(newTemperature: Temperature): Promise<void> {
       if (temperatureState) {
         setTemperatureState({ current: temperatureState.current, target: undefined})
-        const newTarget = await props.viewModel.setTargetTemperature(newTemperature)
+        const newTarget = await props.service.setTargetTemperature(newTemperature)
         setTemperatureState( { current: temperatureState.current, target: newTarget } )
       }
     }
@@ -91,10 +91,9 @@ export namespace HvacControl {
   }
 
  /**
-   * Contract to be supported by the view model for the ControlPage. The page's view model is responsible for 
-   * providing the information to be displayed in the page. 
+   * Contract to be supported by the service used by the ControlPage.
    */
-  export interface ViewModel {
+  export interface Service {
     setPowerState: (state: PowerState) => Promise<PowerState>
     getPowerState: () => Promise<PowerState>
     getTemperature: () => Promise<ControlledTemperature>
@@ -103,11 +102,11 @@ export namespace HvacControl {
 
   /**
    * Creates the page view model.
-   * @argument mocked - A boolean value indicating whether the view model should be mocked or not.
-   * @returns The view model instance.
+   * @argument mocked - A boolean value indicating whether the service should be mocked or not.
+   * @returns The service instance.
    */
-  export function createPageViewModel(mocked: Boolean): ViewModel {
-    return getMockedViewModel(PowerState.OFF, { current: new Temperature(21), target: new Temperature(21) })
+  export function createService(mocked: Boolean): Service {
+    return getMockedService(PowerState.OFF, { current: new Temperature(21), target: new Temperature(21) })
   }
 
   /**
@@ -154,12 +153,12 @@ export namespace HvacControl {
   }
 
   /**
-   * A mocked implementation of the page's view model.
+   * A mocked implementation of the HVAC control service.
    * @param initialState - the initial HVAC power state.
    * @param initialTemperature - the initial temperature information.
-   * @returns the newly instantiated view model mock.
+   * @returns the newly instantiated service mock.
    */
-  function getMockedViewModel(initialState: PowerState, initialTemperature: ControlledTemperature): ViewModel {
+  function getMockedService(initialState: PowerState, initialTemperature: ControlledTemperature): Service {
     let mockedPowerState = initialState
     let mockedTemperature = initialTemperature
     return {

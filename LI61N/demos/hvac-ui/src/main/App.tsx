@@ -1,5 +1,6 @@
 import logo from './logo.svg'
 import './App.css'
+import React from 'react'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { HvacControl } from './hvac/ControlPage'
 import { Login } from './login/LoginPage'
@@ -24,8 +25,8 @@ function SplashPage() {
  */
 function PageRouter() {
   const sessionRepository = UserSession.createRepository()
-  const loginPageRoute = "/login"
-  const hvacPageRoute = "/hvac"
+  const loginPageRoute = '/login'
+  const hvacPageRoute = '/hvac'
   return (
     <Router>
       <Switch>
@@ -34,7 +35,7 @@ function PageRouter() {
         </Route>
         <Route exact path={hvacPageRoute}>
           <Login.EnsureCredentials sessionRepo={sessionRepository} loginPageRoute={loginPageRoute}>
-            <HvacControl.Page viewModel={HvacControl.createPageViewModel(true)} sessionRepo={sessionRepository} signOutRedirectRoute="/" />
+            <HvacControl.Page service={HvacControl.createService(true)} sessionRepo={sessionRepository} signOutRedirectRoute="/" />
           </Login.EnsureCredentials>
         </Route>
         <Route path="/">

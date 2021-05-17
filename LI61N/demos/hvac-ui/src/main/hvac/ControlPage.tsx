@@ -1,16 +1,22 @@
-import React, { MouseEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Redirect } from 'react-router-dom'
+
+import './ControlPage.css'
+
 import { PowerButton, PowerButtonProps } from './PowerButton'
 import { TemperatureCard } from './temperature/TemperatureCard'
 import { PowerState, toggle, Temperature, ControlledTemperature } from './hvacModel'
-import './ControlPage.css'
 import { ControlPageViewModel } from './ControlPageViewModel'
+import { UserSession } from '../login/UserSession'
 
 /**
  * Contract to be supported by objects passed as props to the LoginPage component.
  * @property viewModel  - the associated view model instance
  */
 interface ControlPageProps {
-  viewModel: ControlPageViewModel
+  viewModel: ControlPageViewModel,
+  sessionRepo: UserSession.Repository,
+  signOutRedirectRoute: string
 }
 
 /**
@@ -23,7 +29,9 @@ export default function ControlPage(props: ControlPageProps) {
   // TODO: Revisit the representation for data being fetched (currently we use undefined)
   const [powerState, setPowerState] = useState<PowerState | undefined>()
   const [temperatureState, setTemperatureState] = useState<ControlledTemperature | undefined>()
+  const [isSignedOut, signOut] = useState<Boolean>(false)
 
+  // TODO: Revisit useEffect to handle cancellattion of the async operation
   useEffect(() => { 
     async function loadPowerState() {
       console.log("Loading power state ...")
@@ -49,7 +57,7 @@ export default function ControlPage(props: ControlPageProps) {
     powerstate = ${JSON.stringify(powerState)} 
     temperatureState = ${JSON.stringify(temperatureState)}`)
 
-  async function handlePowerToggle(evt: MouseEvent<HTMLButtonElement>): Promise<void> {
+  async function handlePowerToggle(): Promise<void> {
     if (powerState) {
       setPowerState(undefined)
       const nextPowerState = await props.viewModel.setPowerState(toggle(powerState))
@@ -66,7 +74,13 @@ export default function ControlPage(props: ControlPageProps) {
   }
   
   return (
+    isSignedOut ? <Redirect to={props.signOutRedirectRoute} /> : 
     <>
+      <button className="ui mini basic icon button" 
+        style={{ float: 'right'}} 
+        onClick={() => { props.sessionRepo.logout(); signOut(true) }}>
+          <i className="sign-out icon" />
+      </button>
       <PageHeader state={powerState} onClick={handlePowerToggle} />
       <PageBody 
         temperature={temperatureState} 
@@ -82,12 +96,12 @@ export default function ControlPage(props: ControlPageProps) {
  */
 function PageHeader(props: PowerButtonProps) {
   return (
-    <div className="Control-header">
-      <div className="ui massive floating message">
-        <p>HVAC is </p>
-        <PowerButton state={props.state} onClick={props.onClick} />
+      <div className="Control-header">
+        <div className="ui massive floating message">
+          <p>HVAC is </p>
+          <PowerButton state={props.state} onClick={props.onClick} />
+        </div>
       </div>
-    </div>
   )
 }
 

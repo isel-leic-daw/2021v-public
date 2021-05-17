@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Temperature } from '../../hvacModel'
 
 /**
@@ -23,21 +23,32 @@ export interface TemperatureEditorProps {
 export function TemperatureEditor(props: TemperatureEditorProps) {
 
   const [editing, setEditing] = useState(false)
-  const temperatureInputRef = useRef<HTMLInputElement>(null)
+  const [targetTemperature, setTargetTemperature] = useState<number>()
   
   const handleEditClick = () => { setEditing(!editing) }
-  const handleCancel = () => { setEditing(!editing) }
+  const handleCancel = () => { setEditing(!editing); setTargetTemperature(props.value?.value) }
   const handleSubmit = () => { 
-    setEditing(!editing); 
-    if (props.submitChange && props.value)
-      props.submitChange(new Temperature(+(temperatureInputRef.current?.value || props.value.toString()))) 
+    setEditing(!editing) 
+    if (props.submitChange && props.value && targetTemperature)
+      props.submitChange(new Temperature(targetTemperature))
   }
   
+  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    const value: number = +evt.target.value
+    console.log(`handleChange() with ${value}`)
+    if (value >= Temperature.MIN && value <= Temperature.MAX) {
+      setTargetTemperature(value)
+    }
+    else {
+      evt.preventDefault()
+    }
+  }
+
   function renderEditingMode()  {
-    const temperatureValue = props.value?.value
     return (
       <div className="ui mini input">
-        <input type="number" placeholder="Enter new value..." defaultValue={temperatureValue} ref={temperatureInputRef} /> &nbsp;
+        <input type="number" placeholder="Enter new value..." onChange={handleChange} 
+          value = { targetTemperature || props.value?.value } />  &nbsp;
         <div className="ui small basic icon buttons">
           <div className="ui red basic button" onClick={handleCancel}>
             <i className="close icon" />

@@ -17,8 +17,10 @@ export function toggle(powerState: PowerState): PowerState {
  * Temperatures are expressed in ºC and must be in the range [10, 40]. 
  */
 export class Temperature {
+  static MAX: number = 40
+  static MIN: number = 10
   readonly value: number
-  constructor(value: number) { this.value = coerceToLimits(value, 10, 40)}
+  constructor(value: number) { this.value = coerceToLimits(value, Temperature.MIN, Temperature.MAX)}
 }
 
 /**

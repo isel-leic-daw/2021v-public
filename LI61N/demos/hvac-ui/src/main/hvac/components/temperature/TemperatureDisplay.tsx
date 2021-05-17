@@ -1,4 +1,4 @@
-import { Temperature } from '../hvacModel'
+import { Temperature } from '../../hvacModel'
 
 /**
  * Contract to be supported by objects passed as props to the TemperatureDisplay component.

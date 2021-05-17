@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import { Temperature } from '../hvacModel'
+import { useRef, useState } from 'react'
+import { Temperature } from '../../hvacModel'
 
 /**
  * Contract to be supported by objects passed as props to the TemperatureEditor component.

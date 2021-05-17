@@ -1,8 +1,7 @@
 import logo from './logo.svg'
 import './App.css'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
-import ControlPage from './hvac/ControlPage'
-import { getControlPageViewModel } from './hvac/ControlPageViewModel'
+import { HvacControl } from './hvac/ControlPage'
 import { Login } from './login/LoginPage'
 import { UserSession } from './login/UserSession'
 
@@ -35,7 +34,7 @@ function PageRouter() {
         </Route>
         <Route exact path={hvacPageRoute}>
           <Login.EnsureCredentials sessionRepo={sessionRepository} loginPageRoute={loginPageRoute}>
-            <ControlPage viewModel={getControlPageViewModel()} sessionRepo={sessionRepository} signOutRedirectRoute="/" />
+            <HvacControl.Page viewModel={HvacControl.createPageViewModel(true)} sessionRepo={sessionRepository} signOutRedirectRoute="/" />
           </Login.EnsureCredentials>
         </Route>
         <Route path="/">

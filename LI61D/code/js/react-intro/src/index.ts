@@ -4,6 +4,12 @@
 // import { demo } from './demo-first'
 // import { demo } from './demo-second'
 // import { demo } from './demo-third'
-import { demo } from './demo-counter'
+// import { demo } from './demo-counter'
+// import { demo } from './demo-input'
+// import { demo } from './demo-input-reducer'
+// import { demo } from './demo-input-simple'
+// import { demo } from './demo-fetch'
+// import { demo } from './demo-useFetch'
+import { demo } from './demo-router'
 
 demo()

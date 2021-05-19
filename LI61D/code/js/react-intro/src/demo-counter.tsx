@@ -3,11 +3,19 @@ import ReactDOM from 'react-dom'
 
 function Counter({ title }: { title: string }) {
   const [counter, setCounter] = useState(0)
-  function inc() { setCounter(counter + 1) }
-  function dec() { setCounter(counter - 1) }
+  const [clicks, setClicks] = useState(0)
+  function inc() {
+    setCounter(counter + 1)
+    setClicks(clicks + 1)
+  }
+  function dec() {
+    setCounter(counter - 1)
+    setClicks(clicks + 1)
+  }
   return (
     <div>
       <h2>{title}</h2>
+      <p>Number of clicks {clicks}</p>
       <p><button onClick={inc}>+</button></p>
       {counter}
       <p><button onClick={dec}>-</button></p>

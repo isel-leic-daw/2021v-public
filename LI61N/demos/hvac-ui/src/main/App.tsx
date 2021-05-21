@@ -1,6 +1,6 @@
 import logo from './logo.svg'
 import './App.css'
-import React from 'react'
+import { useState } from 'react'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { HvacControl } from './hvac/ControlPage'
 import { Login } from './login/LoginPage'
@@ -24,18 +24,17 @@ function SplashPage() {
  * Renders the page that corresponds to the current route.
  */
 function PageRouter() {
-  const sessionRepository = UserSession.createRepository()
   const loginPageRoute = '/login'
   const hvacPageRoute = '/hvac'
   return (
     <Router>
       <Switch>
         <Route exact path={loginPageRoute}>
-          <Login.Page sessionRepo={sessionRepository} redirectPath={hvacPageRoute} />
+          <Login.Page redirectPath={hvacPageRoute} />
         </Route>
         <Route exact path={hvacPageRoute}>
-          <Login.EnsureCredentials sessionRepo={sessionRepository} loginPageRoute={loginPageRoute}>
-            <HvacControl.Page service={HvacControl.createService(true)} sessionRepo={sessionRepository} signOutRedirectRoute="/" />
+          <Login.EnsureCredentials loginPageRoute={loginPageRoute}>
+            <HvacControl.Page service={HvacControl.createService(true)} />
           </Login.EnsureCredentials>
         </Route>
         <Route path="/">
@@ -50,9 +49,22 @@ function PageRouter() {
  * The application entry point.
  */
 function App() {
+  const [userCredentials, setUserCredentials] = useState<UserSession.Credentials | undefined>(undefined)
+  const userSessionRepo = UserSession.createRepository()
+
+  const currentSessionContext = {
+    credentials: userCredentials,
+    login: (username: string, password: string) => {
+      setUserCredentials(userSessionRepo.login(username, password))
+    },
+    logout: () => { userSessionRepo.logout(); setUserCredentials(undefined) }
+  }
+
   return (
     <div className="App">
-      <PageRouter />
+      <UserSession.Context.Provider value={currentSessionContext}>
+        <PageRouter />
+      </UserSession.Context.Provider> 
     </div>
   )
 }

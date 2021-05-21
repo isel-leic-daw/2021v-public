@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import { useContext, useEffect, useState } from 'react'
 
 import './ControlPage.css'
 
@@ -15,9 +14,7 @@ export namespace HvacControl {
    * @property viewModel  - the associated view model instance
    */
   type PageProps = {
-    service: Service,
-    sessionRepo: UserSession.Repository,
-    signOutRedirectRoute: string
+    service: Service
   }
 
   /**
@@ -30,7 +27,7 @@ export namespace HvacControl {
     // TODO: Revisit the representation for data being fetched (currently we use undefined)
     const [powerState, setPowerState] = useState<PowerState | undefined>()
     const [temperatureState, setTemperatureState] = useState<ControlledTemperature | undefined>()
-    const [isSignedOut, signOut] = useState<Boolean>(false)
+    const userSession = useContext(UserSession.Context)
 
     // TODO: Revisit useEffect to handle cancellattion of the async operation
     useEffect(() => { 
@@ -75,11 +72,11 @@ export namespace HvacControl {
     }
     
     return (
-      isSignedOut ? <Redirect to={props.signOutRedirectRoute} /> : 
+      !userSession?.credentials ? <> </> : 
       <>
         <button className="ui mini basic icon button" 
           style={{ float: 'right'}} 
-          onClick={() => { props.sessionRepo.logout(); signOut(true) }}>
+          onClick={() => {userSession?.logout() }}>
             <i className="sign-out icon" />
         </button>
         <PageHeader state={powerState} onClick={handlePowerToggle} />

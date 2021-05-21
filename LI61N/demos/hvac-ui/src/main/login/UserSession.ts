@@ -1,6 +1,8 @@
+import { createContext } from 'react'
 import { Base64Encoded } from '../common'
 
 export namespace UserSession {
+  
   /**
    * The user's credentials.
    * @property username - the user's identifier
@@ -15,9 +17,9 @@ export namespace UserSession {
   /**
    * The contract to be supported by user session repositories.
    */
-  export interface Repository {
-    isLoggedIn: () => Credentials | null,
-    login: (username: string, password: string) => void
+  export type Repository = {
+    isLoggedIn: () => Credentials | undefined,
+    login: (username: string, password: string) => Credentials
     logout: () => void
   }
 
@@ -28,16 +30,31 @@ export namespace UserSession {
   export function createRepository(): Repository {
     const KEY = 'CredentialsKey'
     return {
-      isLoggedIn: () => { 
-        const credentials = sessionStorage.getItem(KEY)
-        return !credentials ? null : JSON.parse(credentials) 
+      isLoggedIn: (): Credentials => { 
+        const credentialsJSON = sessionStorage.getItem(KEY)
+        return credentialsJSON ? JSON.parse(credentialsJSON) : undefined
       },
       login: (username: string, password: string) => { 
         const credentials = { username, password: new Base64Encoded(password) }
         sessionStorage.setItem(KEY, JSON.stringify(credentials))
+        return credentials
       },
-      logout: () => { sessionStorage.removeItem(KEY) }
+      logout: (): Repository => { 
+        sessionStorage.removeItem(KEY) 
+        return createRepository()
+      }
     }
   }
+
+  export type ContextType = {
+    readonly credentials?: UserSession.Credentials,
+    login: (username: string, password: string) => void
+    logout: () => void
+  }
+
+  /**
+   * The user session context. Initially, it is undefined.
+   */
+  export const Context = createContext<ContextType | undefined>(undefined)
 }  
 

@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef, useState } from 'react'
+import { ReactNode, useContext, useRef, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { UserSession } from './UserSession'
 import { isEmpty, hasWhiteSpace } from '../common'
@@ -7,11 +7,9 @@ export namespace Login {
 
   /**
    * Type that specifies the props object for the LoginPage component.
-   * @property sessionRepo  - the user session repository
    * @property redirectPath - the path to where the 
    */
   type PageProps = {
-    sessionRepo: UserSession.Repository,
     redirectPath: string
   }
   
@@ -20,12 +18,14 @@ export namespace Login {
    * @argument props - the page's props object.
    * @returns The React Element used to render the page.
    */
-  export function Page({ sessionRepo, redirectPath }: PageProps) {
+  export function Page({ redirectPath }: PageProps) {
     
     const userNameInputRef = useRef<HTMLInputElement>(null)
     const pwdInputRef = useRef<HTMLInputElement>(null)
+
     type CredentialsState = { usernameOK: boolean, passwordOK: boolean }
     const [credentialsState, setCredentialsState] = useState<CredentialsState | undefined>()
+    const userSession = useContext(UserSession.Context)
 
     function credentialsAreOK() { 
       return credentialsState?.usernameOK && credentialsState?.passwordOK 
@@ -43,13 +43,13 @@ export namespace Login {
       if (!enteredCredentials.usernameOK) { userNameInputRef.current?.focus() }
       else if (!enteredCredentials.passwordOK) { pwdInputRef.current?.focus() }
 
-      if (username && password)
-        sessionRepo.login(username, password)
+      if (username && password && userSession)
+      userSession.login(username, password)
 
       setCredentialsState(enteredCredentials)
     }
 
-    return sessionRepo.isLoggedIn() || credentialsAreOK() ? <Redirect to={redirectPath} /> : (
+    return userSession?.credentials || credentialsAreOK() ? <Redirect to={redirectPath} /> : (
       <div className="ui middle aligned center aligned grid" style={{ marginTop: 125 }}>
         <div className="column" style={{maxWidth: 380}}>
           <h2 className="ui header centered">
@@ -87,15 +87,16 @@ export namespace Login {
    */
   type EnsureCredentialsProps = {
     loginPageRoute: string,
-    sessionRepo: UserSession.Repository,
     children?: ReactNode
   }
 
   /**
    * Component responsible for verifying if the user has already entered his credentials.
    */
-  export function EnsureCredentials({loginPageRoute, sessionRepo, children} : EnsureCredentialsProps) {
-    return !sessionRepo.isLoggedIn() ? <Redirect to={loginPageRoute} /> : <> {children} </>
+  export function EnsureCredentials({loginPageRoute, children} : EnsureCredentialsProps) {
+    return <UserSession.Context.Consumer>
+      { user => user && user.credentials ? <> {children} </> : <Redirect to={loginPageRoute} /> }
+    </UserSession.Context.Consumer>
   }
 }  
 

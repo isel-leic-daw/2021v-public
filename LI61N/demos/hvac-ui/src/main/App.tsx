@@ -1,10 +1,16 @@
 import logo from './logo.svg'
 import './App.css'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { HvacControl } from './hvac/ControlPage'
 import { Login } from './login/LoginPage'
 import { UserSession } from './login/UserSession'
+import { Home } from './Home'
+
+
+// TODO: this should be an environment variable
+const API_BASE_URL = 'http://localhost:3000/api'
+const HOME_URL = new URL(`${API_BASE_URL}`)
 
 /**
  * The application's splash page, displayed during startup.
@@ -20,12 +26,29 @@ function SplashPage() {
   )
 }
 
+type RouterProps = {
+  fetchHomeInfo: (homeUrl: URL, credentials?: UserSession.Credentials) => Promise<Home.Info>
+}
+
 /**
  * Renders the page that corresponds to the current route.
  */
-function PageRouter() {
+function PageRouter({fetchHomeInfo}: RouterProps) {
   const loginPageRoute = '/login'
   const hvacPageRoute = '/hvac'
+
+  const [homeInfo, setHomeInfo] = useState<Home.Info>()
+  const userSession = useContext(UserSession.Context)
+  
+  useEffect(() => {
+    if (userSession && userSession.credentials) {
+      // TODO: Show error page if we cannot get the home resource
+      fetchHomeInfo(HOME_URL, userSession.credentials)
+        .then((info) => setHomeInfo(info))
+        .catch((error) => console.log(error))
+    }
+  }, [userSession, userSession?.credentials, fetchHomeInfo, setHomeInfo])
+
   return (
     <Router>
       <Switch>
@@ -34,7 +57,10 @@ function PageRouter() {
         </Route>
         <Route exact path={hvacPageRoute}>
           <Login.EnsureCredentials loginPageRoute={loginPageRoute}>
-            <HvacControl.Page service={HvacControl.createService(true)} />
+            { 
+              !homeInfo ? <SplashPage /> : 
+                <HvacControl.Page service={HvacControl.createService(true)} />
+            }
           </Login.EnsureCredentials>
         </Route>
         <Route path="/">
@@ -63,7 +89,7 @@ function App() {
   return (
     <div className="App">
       <UserSession.Context.Provider value={currentSessionContext}>
-        <PageRouter />
+        <PageRouter fetchHomeInfo={Home.fetchInfo} />
       </UserSession.Context.Provider> 
     </div>
   )

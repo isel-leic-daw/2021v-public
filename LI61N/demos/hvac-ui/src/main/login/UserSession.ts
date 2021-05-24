@@ -5,13 +5,10 @@ export namespace UserSession {
   
   /**
    * The user's credentials.
-   * @property username - the user's identifier
-   * @property password - the user's password in a Base64 encoding. IMPORTANT: This is still clear text
-   * and therefore it cannot be stored outside of the process' address space.
    */
   export type Credentials = {
-    username: string,
-    password: Base64Encoded
+    type: 'Basic' | 'Bearer',
+    content: Base64Encoded
   }
   
   /**
@@ -35,7 +32,7 @@ export namespace UserSession {
         return credentialsJSON ? JSON.parse(credentialsJSON) : undefined
       },
       login: (username: string, password: string) => { 
-        const credentials = { username, password: new Base64Encoded(password) }
+        const credentials: Credentials = { type: 'Basic', content: new Base64Encoded(`${username}:${password}`) }
         sessionStorage.setItem(KEY, JSON.stringify(credentials))
         return credentials
       },

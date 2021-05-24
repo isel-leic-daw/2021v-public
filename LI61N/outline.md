@@ -176,7 +176,7 @@ Lecturer: Paulo Pereira
 * Additional resources:
   * [Content on Declarative UI](http://intelligiblebabble.com/content-on-declarative-ui/)
 
-[Lecture Video (in Portuguese)](__coming soon__)
+[Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=g1QBhSHOZK8&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=8)
 
 ### 17/05/2021 - Creating a Web UI with React Hooks (continued)
 * State management in React, continued: revisiting props and state
@@ -188,5 +188,29 @@ Lecturer: Paulo Pereira
   * Declarative routing in React: [React Router](https://reactrouter.com/web/guides/quick-start)
 * Considerations on React application's architecure
   * [Favoring composition](https://reactjs.org/docs/composition-vs-inheritance.html)
+
+[Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=wkqHfVuDOH0&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=9)
+
+### 24/05/2021 - Creating a Web UI with React Hooks (continued)
+* State management in React, continued: 
+  * ["Context API"](https://reactjs.org/docs/context.html)
+    * [Logout Demo using props](https://gist.github.com/palbp/cea96cec45a6d5c7884a20a3d31505cf)
+    * [Logout Demo using Context](https://gist.github.com/palbp/6b5f3bd741e8b3cb87cad193405fc9a2)
+  * [useContext](https://reactjs.org/docs/hooks-reference.html#usecontext) hook
+* Making HTTP requests to the solution's Web API
+  * [The Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+  * [Same Origin Policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy)
+  * Considerations on the deployment of the solution
+    * Adding reverse-proxy behavior to webpack's dev server
+      * Configuration of a React App created with [create-react-app](https://facebook.github.io/create-react-app/docs/getting-started) using [craco](https://github.com/gsoft-inc/craco)
+        * [Installation](https://github.com/gsoft-inc/craco/blob/master/packages/craco/README.md#installation)
+        * [Configuration Overview](https://github.com/gsoft-inc/craco/blob/master/packages/craco/README.md#configuration-overview)
+  * Revisiting [useEffect](https://reactjs.org/docs/hooks-effect.html) hook
+    * Handling race conditions in asynchronous operations
+    * Canceling effects
+    * [Handling API request race conditions in React](https://sebastienlorber.com/handling-api-request-race-conditions-in-react)
+* Additional resources:
+  * [Fetch](https://fetch.spec.whatwg.org/)
+  * [CORS - Cross Origin Resource Sharing](https://fetch.spec.whatwg.org/#http-cors-protocol)
 
 [Lecture Video (in Portuguese)](__coming soon__)

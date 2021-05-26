@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from 'react'
-import { PowerState } from '../hvacModel'
+import { PowerState } from '../Model'
 
 /**
  * Contract to be supported by objects passed as props to the PowerButton component.

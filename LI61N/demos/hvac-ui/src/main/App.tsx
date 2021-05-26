@@ -2,10 +2,13 @@ import logo from './logo.svg'
 import './App.css'
 import { useContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
-import { HvacControl } from './hvac/ControlPage'
-import { Login } from './login/LoginPage'
-import { UserSession } from './login/UserSession'
-import { Home } from './Home'
+
+import * as Hvac from './hvac/Page'
+import * as Login from './login/Page'
+import * as UserSession from './login/UserSession'
+
+import { EnsureCredentials } from './login/EnsureCredentials'
+import { Home } from './home/Home'
 
 
 // TODO: this should be an environment variable
@@ -56,12 +59,12 @@ function PageRouter({fetchHomeInfo}: RouterProps) {
           <Login.Page redirectPath={hvacPageRoute} />
         </Route>
         <Route exact path={hvacPageRoute}>
-          <Login.EnsureCredentials loginPageRoute={loginPageRoute}>
+          <EnsureCredentials loginPageRoute={loginPageRoute}>
             { 
               !homeInfo ? <SplashPage /> : 
-                <HvacControl.Page service={HvacControl.createService(true)} />
+                <Hvac.Page service={Hvac.createService(true)} />
             }
-          </Login.EnsureCredentials>
+          </EnsureCredentials>
         </Route>
         <Route path="/">
           <Redirect to={hvacPageRoute} />

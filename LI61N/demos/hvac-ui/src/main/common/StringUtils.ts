@@ -23,10 +23,20 @@ export class NonWhiteSpaceString {
   }
 }
 
+/**
+ * Checks whether the received string has any whitespace characters.
+ * @param value - The string to be checked.
+ * @returns true if the string contains at least a whitespace character, false otherwise.
+ */
 export function hasWhiteSpace(value: string): boolean {
   return value.match(/\s/) !== null
 }
 
+/**
+ * Checks whether the received string is empty.
+ * @param value - The string to be checked.
+ * @returns true if the string is empty, false otherwise.
+ */
 export function isEmpty(value: string): boolean {
   return value.length === 0
 }

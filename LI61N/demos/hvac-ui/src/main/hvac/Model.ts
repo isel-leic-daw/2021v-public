@@ -33,6 +33,13 @@ export interface ControlledTemperature {
   target?: Temperature
 }
 
+/**
+ * Functions that forces the received value into the specified limits.
+ * @param value - the value to be coerced.
+ * @param min   - the lower limit.
+ * @param max   - the upper limit.
+ * @returns     - the coerced value.
+ */
 function coerceToLimits(value: number, min: number, max: number): number {
   return Math.max(Math.min(max, value), min)
 }

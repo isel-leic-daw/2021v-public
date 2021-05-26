@@ -1,4 +1,4 @@
-import { UserSession } from './login/UserSession'
+import * as UserSession from '../login/UserSession'
 
 // TODO: Refine these types
 export namespace Home {

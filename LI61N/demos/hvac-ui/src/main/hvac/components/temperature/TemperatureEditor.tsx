@@ -25,10 +25,10 @@ export function TemperatureEditor(props: TemperatureEditorProps) {
   const [editing, setEditing] = useState(false)
   const [targetTemperature, setTargetTemperature] = useState<number>()
   
-  const handleEditClick = () => { setEditing(!editing) }
-  const handleCancel = () => { setEditing(!editing); setTargetTemperature(props.value?.value) }
+  const handleEditClick = () => { setEditing((prevEditing) => !prevEditing) }
+  const handleCancel = () => { setEditing((prevEditing) => !prevEditing); setTargetTemperature(props.value?.value) }
   const handleSubmit = () => { 
-    setEditing(!editing) 
+    setEditing((prevEditing) => !prevEditing) 
     if (props.submitChange && props.value && targetTemperature)
       props.submitChange(new Temperature(targetTemperature))
   }

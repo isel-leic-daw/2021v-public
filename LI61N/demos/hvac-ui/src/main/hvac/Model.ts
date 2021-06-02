@@ -3,6 +3,11 @@
  */
 export enum PowerState { ON = "ON", OFF = "OFF" }
 
+
+export type PowerStateDto = {
+  value: PowerState
+}
+
 /**
  * Toggles the given power state value, that is, OFF becomes ON e vice-versa.
  * @param powerState - the input power state value.

@@ -5,6 +5,7 @@ import './Page.css'
 import { PowerButton, PowerButtonProps } from './components/PowerButton'
 import { TemperatureCard } from './components/temperature/TemperatureCard'
 import { PowerState, toggle, Temperature, ControlledTemperature } from './Model'
+import { Service, getMockedService, getService } from './Service'
 
 import * as UserSession from '../login/UserSession'
 
@@ -33,7 +34,7 @@ export function Page(props: PageProps) {
     async function loadPowerState() {
       console.log("Loading power state ...")
       const currPowerState = await props.service.getPowerState()
-      setPowerState(currPowerState)
+      setPowerState(currPowerState.properties?.value)
     }
     console.log("Running power state effect ...")
     if (!powerState) loadPowerState()
@@ -87,25 +88,6 @@ export function Page(props: PageProps) {
 }
 
 /**
- * Contract to be supported by the service used by the ControlPage.
- */
-export interface Service {
-  setPowerState: (state: PowerState) => Promise<PowerState>
-  getPowerState: () => Promise<PowerState>
-  getTemperature: () => Promise<ControlledTemperature>
-  setTargetTemperature: (value: Temperature) => Promise<Temperature>
-}
-
-/**
- * Creates the page view model.
- * @argument mocked - A boolean value indicating whether the service should be mocked or not.
- * @returns The service instance.
- */
-export function createService(mocked: Boolean): Service {
-  return getMockedService(PowerState.OFF, { current: new Temperature(21), target: new Temperature(21) })
-}
-
-/**
  * The header of the HVAC control page.
  * @param {PowerButtonProps} props - The props object.
  * @returns The React Element used to render the page's header (i.e. ON/OFF button).
@@ -149,39 +131,14 @@ function PageBody(props: TemperatureProps) {
 }
 
 /**
- * A mocked implementation of the HVAC control service.
- * @param initialState - the initial HVAC power state.
- * @param initialTemperature - the initial temperature information.
- * @returns the newly instantiated service mock.
+ * Creates an implementation of the HVAC control service. If any of the resource's URL is not provided, a mocked 
+ * implementation is produced.
+ * @param temperature - the temperature resource URL.
+ * @param powerState  - the power state resource URL.
+ * @returns The service instance.
  */
-function getMockedService(initialState: PowerState, initialTemperature: ControlledTemperature): Service {
-  let mockedPowerState = initialState
-  let mockedTemperature = initialTemperature
-  return {
-    setPowerState: async (state: PowerState): Promise<PowerState> => {
-      return new Promise<PowerState>((resolve, _) => {
-        setTimeout(() => { mockedPowerState = state; resolve(mockedPowerState) }, 5000)
-      })
-    },
-
-    getPowerState: async (): Promise<PowerState> => {
-      return new Promise<PowerState>((resolve, _) => {
-        setTimeout(() => { resolve(mockedPowerState) }, 5000)
-      })
-    },
-
-    getTemperature: async (): Promise<ControlledTemperature> => {
-      return new Promise<ControlledTemperature>((resolve, _) => {
-        setTimeout(() => { resolve(mockedTemperature) }, 5000)
-      })
-    },
-
-    setTargetTemperature: async (value): Promise<Temperature> => {
-      return new Promise<Temperature>((resolve, _) => {
-        setTimeout(() => { resolve(value) }, 5000)
-      })
-    }
-  }
+ export function createService(temperature?: URL, powerState?: URL): Service {
+   if (!temperature || !powerState)
+    return getMockedService(PowerState.OFF, { current: new Temperature(21), target: new Temperature(21) })
+  else return getService(temperature, powerState)
 }
-
-

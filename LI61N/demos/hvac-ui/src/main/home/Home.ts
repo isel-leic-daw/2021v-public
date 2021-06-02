@@ -1,40 +1,38 @@
+import { Request, cancelableRequest } from '../common/FetchUtils'
 import * as UserSession from '../login/UserSession'
 
 // TODO: Refine these types
-export namespace Home {
-  
-  export type ApiInfo = {
-    title: string,
-    links: {
-      author: string,
-      describedBy: string
-    }
+export type ApiInfo = {
+  title: string,
+  links: {
+    author: string,
+    describedBy: string
   }
+}
 
-  export type NavigationLink = {
-    href: string
-  }
+export type NavigationLink = {
+  href: string
+}
 
-  export type ResourcesInfo = {
-    power_state?: NavigationLink,
-    temperature?: NavigationLink
-  }
-  
-  export type Info = {
-    api: ApiInfo,
-    resources: ResourcesInfo
-  }
+export type ResourcesInfo = {
+  power_state?: NavigationLink,
+  temperature?: NavigationLink
+}
 
-  export async function fetchInfo(url: URL, credentials?: UserSession.Credentials): Promise<Info> {
-    console.log(`Home.fetchInfo()`)
-    const response = await fetch(url.toString(), {
-      headers: credentials ? { 'Authorization': `${credentials.type} ${credentials.content.value}` } : { }
-    })
+export type Info = {
+  api: ApiInfo,
+  resources: ResourcesInfo
+}
 
-    if (response.ok)
-      return await response.json()
-
-    throw new Error(response.status === 401 ? "Invalid credentials" : "Could not get home resource")
-  }
+/**
+ * Gets the Home resource from the API.
+ * @param url         - The Home resource URL.
+ * @param credentials - The user's credentials.
+ * @returns The request to be sent.
+ */
+export function fetchInfo(url: URL, credentials?: UserSession.Credentials): Request<Info> {
+  return cancelableRequest(url, {
+    headers: credentials ? { 'Authorization': `${credentials.type} ${credentials.content.value}` } : { },
+  })
 }
 

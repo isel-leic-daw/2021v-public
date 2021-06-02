@@ -1,15 +1,16 @@
 import logo from './logo.svg'
 import './App.css'
-import { useContext, useEffect, useState } from 'react'
+import { ReactNode, useContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 
 import * as Hvac from './hvac/Page'
 import * as Login from './login/Page'
 import * as UserSession from './login/UserSession'
+import * as Home from './home/Home'
+import { OfflinePage, InvalidCredentialsPage } from './error/ErrorPages'
 
 import { EnsureCredentials } from './login/EnsureCredentials'
-import { Home } from './home/Home'
-
+import * as API from './common/FetchUtils'
 
 // TODO: this should be an environment variable
 const API_BASE_URL = 'http://localhost:3000/api'
@@ -30,7 +31,7 @@ function SplashPage() {
 }
 
 type RouterProps = {
-  fetchHomeInfo: (homeUrl: URL, credentials?: UserSession.Credentials) => Promise<Home.Info>
+  fetchHomeInfo: (homeUrl: URL, credentials?: UserSession.Credentials) => API.Request<Home.Info>
 }
 
 /**
@@ -40,17 +41,51 @@ function PageRouter({fetchHomeInfo}: RouterProps) {
   const loginPageRoute = '/login'
   const hvacPageRoute = '/hvac'
 
-  const [homeInfo, setHomeInfo] = useState<Home.Info>()
+  const [homeInfo, setHomeInfo] = useState<API.FetchInfo<Home.Info>>({
+    state: API.FetchState.ON_GOING
+  })
+  const [invalidCredentials, setInvalidCredentials] = useState<boolean>(false)
   const userSession = useContext(UserSession.Context)
   
   useEffect(() => {
+    async function sendRequest(request: API.Request<Home.Info>) {
+      try {
+        const result: API.Result<Home.Info> = await request.send()
+        if (result.header.ok && result.value) {
+          setHomeInfo({ state: API.FetchState.SUCCESS, result })
+        }
+        else {
+          if (API.isServerError(result)) {
+            setHomeInfo({ state: API.FetchState.ERROR, result })
+          }
+          if (API.isAuthorizationError(result)) {
+            setHomeInfo({ state: API.FetchState.SUCCESS, result })
+            setInvalidCredentials(true)
+          }
+        }
+      }
+      catch(reason) {
+        setHomeInfo({ state: API.FetchState.ERROR })
+      }
+    }
+
     if (userSession && userSession.credentials) {
-      // TODO: Show error page if we cannot get the home resource
-      fetchHomeInfo(HOME_URL, userSession.credentials)
-        .then((info) => setHomeInfo(info))
-        .catch((error) => console.log(error))
+      const homeRequest = Home.fetchInfo(HOME_URL, userSession.credentials)
+      sendRequest(homeRequest)
+      return homeRequest.cancel
     }
   }, [userSession, userSession?.credentials, fetchHomeInfo, setHomeInfo])
+
+  function renderContent(): ReactNode {
+    let content: ReactNode | undefined = undefined
+    switch (homeInfo.state) {
+      case API.FetchState.ON_GOING: content = <SplashPage />; break
+      case API.FetchState.ERROR: content = <OfflinePage />; break
+      default: content = invalidCredentials ? <InvalidCredentialsPage /> : 
+       <Hvac.Page service={Hvac.createService(true)} />
+    }
+    return content
+  }
 
   return (
     <Router>
@@ -60,10 +95,7 @@ function PageRouter({fetchHomeInfo}: RouterProps) {
         </Route>
         <Route exact path={hvacPageRoute}>
           <EnsureCredentials loginPageRoute={loginPageRoute}>
-            { 
-              !homeInfo ? <SplashPage /> : 
-                <Hvac.Page service={Hvac.createService(true)} />
-            }
+            { renderContent() }
           </EnsureCredentials>
         </Route>
         <Route path="/">

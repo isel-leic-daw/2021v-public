@@ -14,7 +14,8 @@ type State =
   | {
     type: 'response',
     status: number,
-    body: string
+    body: string,
+    response: Response
   }
 
 type Action =
@@ -28,15 +29,16 @@ type Action =
   | {
     type: 'response',
     status: number,
-    body: string
+    body: string,
+    response: Response
   }
 
 function actionError(error: string): Action {
   return { type: 'error', error: error }
 }
 
-function actionResponse(status: number, body: string): Action {
-  return { type: 'response', status: status, body: body }
+function actionResponse(response: Response, body: string): Action {
+  return { type: 'response', status: response.status, body: body, response: response }
 }
 
 function reducer(state: State, action: Action): State {
@@ -45,7 +47,7 @@ function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'fetching': return { type: 'fetching' }
     case 'error': return { type: 'error', error: action.error }
-    case 'response': return { type: 'response', status: action.status, body: action.body }
+    case 'response': return { type: 'response', status: action.status, body: action.body, response: action.response }
   }
 }
 
@@ -70,7 +72,7 @@ export function useFetch(uri: string): State {
         if (isCancelled) {
           return
         }
-        dispatcher(actionResponse(resp.status, body))
+        dispatcher(actionResponse(resp, body))
       } catch (error) {
         if (isCancelled) {
           return

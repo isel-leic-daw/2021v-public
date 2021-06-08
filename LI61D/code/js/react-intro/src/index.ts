@@ -10,6 +10,7 @@
 // import { demo } from './demo-input-simple'
 // import { demo } from './demo-fetch'
 // import { demo } from './demo-useFetch'
-import { demo } from './demo-router'
+// import { demo } from './demo-router'
+import { demo } from './demo-form'
 
 demo()

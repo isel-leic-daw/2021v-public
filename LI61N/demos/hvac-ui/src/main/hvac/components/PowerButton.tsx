@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react'
+import { MouseEventHandler } from 'react'
 import { PowerState } from '../Model'
 
 /**
@@ -8,6 +8,7 @@ import { PowerState } from '../Model'
  */
 export interface PowerButtonProps {
   state?: PowerState
+  disabled?: boolean
   onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
@@ -18,10 +19,14 @@ export interface PowerButtonProps {
  */
 export function PowerButton(props: PowerButtonProps) {
   const color = props.state === PowerState.ON ? " green" : ""
+  const buttonContent = <><i className={"power off icon" + color}/> {props.state}</>
+
   return props.state ? (
+    props.disabled ? <button className={"ui basic button" + color} disabled>{buttonContent}</button> : 
     <button className={"ui basic button" + color} onClick={props.onClick}>
-      <i className={"power off icon" + color}/> {props.state}
+      {buttonContent}
     </button>
+
   ) : (
     <button className="ui basic loading button">Loading</button>
   )

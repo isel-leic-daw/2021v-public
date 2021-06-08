@@ -29,14 +29,16 @@ class ChaosFilter(private val env: Environment) : Filter {
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
 
         val httpRequest = request as HttpServletRequest
+
+        logger.info("Handling ${httpRequest.method} ${httpRequest.requestURI} with headers:")
+        val start = System.currentTimeMillis()
+
         val isE2ETests = (env.getProperty("api.e2e.tests") ?: "false").toBoolean()
         if (BuildInfo.isDebugBuild() && !isE2ETests) {
             logger.info("ChaosFilter is delaying processing of request ${httpRequest.method} ${httpRequest.requestURI}")
             Thread.sleep(3000)
         }
 
-        logger.info("Handling ${httpRequest.method} ${httpRequest.requestURI} with headers:")
-        val start = System.currentTimeMillis()
         val headers = StringBuilder()
         httpRequest.headerNames.iterator().forEach {
             headers.append("$it: ${getHeaderContent(httpRequest, it)}; ")

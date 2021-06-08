@@ -4,15 +4,15 @@
  * cases where a response was actually obtained, regardless of its status code. ERROR is used
  * to represent those cases where a response could not be obtained or a 5XX was received.
  */
-export enum FetchState { ON_GOING, ERROR, SUCCESS }
+export enum FetchState { NOT_READY = "NOT_READY", ERROR = "ERROR", SUCCESS = "SUCCESS" }
 
 /**
  * Type used to caracterize the state of a fetch request.
- * @property state  - The state of the fetch request.
+ * @property status - The status of the fetch request.
  * @property result - The request result, if a response was actually obtained.
  */
 export type FetchInfo<T> = {
-  state: FetchState,
+  status: FetchState,
   result?: Result<T>
 }
 
@@ -21,11 +21,11 @@ type ResponseHeader = Pick<Response, 'headers' | 'status' | 'statusText' | 'type
 /**
  * Caracterizes results for API requests.
  * @param header  - the response's header information.
- * @param value   - the result value, if it exists.
+ * @param body    - the result body, if it exists.
  */
 export type Result<T> = {
     header: ResponseHeader,
-    value?: T
+    body?: T
 }
 
 /**
@@ -52,15 +52,14 @@ export function cancelableRequest<T>(url: URL, init?: RequestInit): Request<T> {
 
   const isJson = (mimeType: string | null) => !(!mimeType || !mimeType.toLowerCase().includes('json'))
   const controller = new AbortController()
-  let canceled = false
 
   return {
-    isCanceled: canceled,
-    cancel: () => { canceled = true; controller.abort() },
+    isCanceled: controller.signal.aborted,
+    cancel: () => { if(!controller.signal.aborted) controller.abort() },
     send: async (): Promise<Result<T>>  => {
       const response = await fetch(url.toString(), { ...init, signal: controller.signal })
       return response.ok && isJson(response.headers.get('Content-Type')) ?
-        { header: response, value: await response.json() } : 
+        { header: response, body: await response.json() } : 
         { header: response }
     }
   }

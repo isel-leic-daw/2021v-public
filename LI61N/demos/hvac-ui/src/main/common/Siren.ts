@@ -45,3 +45,5 @@ export type Entity<T> = {
   actions?: Action[],
   title?: string
 }
+
+export const SET_POWER_STATE_ACTION = 'set-power-state'

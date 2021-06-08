@@ -35,7 +35,6 @@ export function TemperatureEditor(props: TemperatureEditorProps) {
   
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const value: number = +evt.target.value
-    console.log(`handleChange() with ${value}`)
     if (value >= Temperature.MIN && value <= Temperature.MAX) {
       setTargetTemperature(value)
     }

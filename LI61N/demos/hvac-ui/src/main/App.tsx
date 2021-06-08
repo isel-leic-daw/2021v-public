@@ -42,7 +42,7 @@ function PageRouter({fetchHomeInfo}: RouterProps) {
   const hvacPageRoute = '/hvac'
 
   const [homeInfo, setHomeInfo] = useState<API.FetchInfo<Home.Info>>({
-    state: API.FetchState.ON_GOING
+    status: API.FetchState.NOT_READY
   })
   const [invalidCredentials, setInvalidCredentials] = useState<boolean>(false)
   const userSession = useContext(UserSession.Context)
@@ -51,26 +51,26 @@ function PageRouter({fetchHomeInfo}: RouterProps) {
     async function sendRequest(request: API.Request<Home.Info>) {
       try {
         const result: API.Result<Home.Info> = await request.send()
-        if (result.header.ok && result.value) {
-          setHomeInfo({ state: API.FetchState.SUCCESS, result })
+        if (result.header.ok && result.body) {
+          setHomeInfo({ status: API.FetchState.SUCCESS, result })
         }
         else {
           if (API.isServerError(result)) {
-            setHomeInfo({ state: API.FetchState.ERROR, result })
+            setHomeInfo({ status: API.FetchState.ERROR, result })
           }
           if (API.isAuthorizationError(result)) {
-            setHomeInfo({ state: API.FetchState.SUCCESS, result })
+            setHomeInfo({ status: API.FetchState.SUCCESS, result })
             setInvalidCredentials(true)
           }
         }
       }
       catch(reason) {
-        setHomeInfo({ state: API.FetchState.ERROR })
+        setHomeInfo({ status: API.FetchState.ERROR })
       }
     }
 
     if (userSession && userSession.credentials) {
-      const homeRequest = Home.fetchInfo(HOME_URL, userSession.credentials)
+      const homeRequest = fetchHomeInfo(HOME_URL, userSession.credentials)
       sendRequest(homeRequest)
       return homeRequest.cancel
     }
@@ -78,11 +78,15 @@ function PageRouter({fetchHomeInfo}: RouterProps) {
 
   function renderContent(): ReactNode {
     let content: ReactNode | undefined = undefined
-    switch (homeInfo.state) {
-      case API.FetchState.ON_GOING: content = <SplashPage />; break
+    switch (homeInfo.status) {
+      case API.FetchState.NOT_READY: content = <SplashPage />; break
       case API.FetchState.ERROR: content = <OfflinePage />; break
       default: content = invalidCredentials ? <InvalidCredentialsPage /> : 
-       <Hvac.Page service={Hvac.createService()} />
+        <Hvac.Page service={Hvac.createService(
+          new URL(`${API_BASE_URL}${homeInfo.result?.body?.resources?.temperature?.href ?? ''}`),
+          new URL(`${API_BASE_URL}${homeInfo.result?.body?.resources?.power_state?.href ?? '/'}`),
+          userSession?.credentials
+        )} />
     }
     return content
   }

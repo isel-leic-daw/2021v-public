@@ -1,38 +1,57 @@
-import { PowerState, PowerStateDto, Temperature, ControlledTemperature } from './Model'
+import { PowerStateDto, Temperature, ControlledTemperature } from './Model'
+import * as Fetch from '../common/FetchUtils'
 import * as Siren from '../common/Siren'
+import { Credentials } from '../login/UserSession'
 
 /**
  * Contract to be supported by the service used by the ControlPage.
  */
  export interface Service {
-  setPowerState: (state: PowerState) => Promise<PowerState>
-  getPowerState: () => Promise<Siren.Entity<PowerStateDto>>
+  setPowerState: (state: PowerStateDto) => Fetch.Request<Siren.Entity<PowerStateDto>>
+  getPowerState: () => Fetch.Request<Siren.Entity<PowerStateDto>>
   getTemperature: () => Promise<ControlledTemperature>
   setTargetTemperature: (value: Temperature) => Promise<Temperature>
 }
 
 /**
  * A mocked implementation of the HVAC control service.
- * @param initialState - the initial HVAC power state.
- * @param initialTemperature - the initial temperature information.
+ * @param initialState        - the initial HVAC power state.
+ * @param initialTemperature  - the initial temperature information.
  * @returns the newly instantiated service mock.
  */
-export function getMockedService(initialState: PowerState, initialTemperature: ControlledTemperature): Service {
+export function getMockedService(initialState: PowerStateDto, initialTemperature: ControlledTemperature): Service {
   let mockedPowerState = initialState
   let mockedTemperature = initialTemperature
   return {
-    setPowerState: async (state: PowerState): Promise<PowerState> => {
-      return new Promise<PowerState>((resolve, _) => {
-        setTimeout(() => { mockedPowerState = state; resolve(mockedPowerState) }, 5000)
-      })
+    setPowerState: (state: PowerStateDto): Fetch.Request<Siren.Entity<PowerStateDto>> => {
+      return {
+        isCanceled: false, 
+        cancel: () => {},
+        send: () => new Promise<Fetch.Result<Siren.Entity<PowerStateDto>>>((resolve, _) => {
+          setTimeout(() => {
+            mockedPowerState = state
+            resolve({ 
+              header: { headers: new Headers(), status: 200, statusText: 'ok', type: 'default', url: '.', ok: true }, 
+              body: { class: ['PowerState'], properties: mockedPowerState, actions: [] }
+            })
+          }, 5000)
+        })
+      }
     },
 
-    getPowerState: async (): Promise<Siren.Entity<PowerStateDto>> => {
-      return new Promise<Siren.Entity<PowerStateDto>>((resolve, _) => {
-        setTimeout(() => { 
-          resolve({ class: ['PowerState'], properties: { value: mockedPowerState } }) 
-        }, 5000)
-      })
+    getPowerState: (): Fetch.Request<Siren.Entity<PowerStateDto>> => {
+      return {
+        isCanceled: false, 
+        cancel: () => {},
+        send: () => new Promise<Fetch.Result<Siren.Entity<PowerStateDto>>>((resolve, _) => {
+          setTimeout(() => {
+            resolve({ 
+              header: { headers: new Headers(), status: 200, statusText: 'ok', type: 'default', url: '.', ok: true }, 
+              body: { class: ['PowerState'], properties: mockedPowerState, actions: [] }
+            })
+          }, 5000)
+        })
+      }
     },
 
     getTemperature: async (): Promise<ControlledTemperature> => {
@@ -55,7 +74,34 @@ export function getMockedService(initialState: PowerState, initialTemperature: C
  * @param powerState  - the power state resource URL.
  * @returns the newly instantiated service.
  */
- export function getService(temperature: URL, powerState: URL): Service {
-  // TODO: Implement
-  throw new Error()
+export function getService(temperature: URL, powerState: URL, credentials: Credentials): Service {
+  return {
+    setPowerState: (value: PowerStateDto): Fetch.Request<Siren.Entity<PowerStateDto>> => {
+      const headers = new Headers({ 'Content-type' : 'application/json' })
+      if (credentials) headers.append('Authorization', `${credentials.type} ${credentials.content.value}`)
+      return Fetch.cancelableRequest<Siren.Entity<PowerStateDto>>(powerState, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(value)
+      })
+    },
+
+    getPowerState: (): Fetch.Request<Siren.Entity<PowerStateDto>> => {
+      return Fetch.cancelableRequest<Siren.Entity<PowerStateDto>>(powerState, {
+        headers: credentials ? { 'Authorization': `${credentials.type} ${credentials.content.value}` } : { },
+      })
+    },
+
+    getTemperature: async (): Promise<ControlledTemperature> => {
+      return new Promise<ControlledTemperature>((resolve, _) => {
+        setTimeout(() => { }, 5000)
+      })
+    },
+
+    setTargetTemperature: async (value): Promise<Temperature> => {
+      return new Promise<Temperature>((resolve, _) => {
+        setTimeout(() => { }, 5000)
+      })
+    }
+  }
 }

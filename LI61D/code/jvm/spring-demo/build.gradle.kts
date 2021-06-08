@@ -46,6 +46,12 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+tasks.register<Copy>("extractUberJar") {
+	dependsOn("assemble")
+	from(zipTree("$buildDir/libs/${rootProject.name}-$version.jar"))
+	into("build/dependency")
+}
+
 task<Exec>("dbTestsUp") {
 	commandLine("docker-compose", "up", "-d", "db-tests")
 }

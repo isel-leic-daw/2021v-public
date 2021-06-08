@@ -70,7 +70,7 @@ class MyConfig {
 }
 
 
-fun main() {
+fun main2() {
     println("Hello Spring Context Example")
     val context = AnnotationConfigApplicationContext(
         MyConfig::class.java,

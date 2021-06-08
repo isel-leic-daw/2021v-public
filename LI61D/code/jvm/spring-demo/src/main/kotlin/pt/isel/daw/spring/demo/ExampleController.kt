@@ -12,7 +12,7 @@ class ExampleController(
     fun get() = "Hello Web"
 
     @GetMapping("/examples/2", produces = ["text/plain"])
-    fun get2() = "Hello Web"
+    fun get2() = "Hello Web, from ${System.getenv("HOSTNAME") }"
 
     @GetMapping("/examples/3")
     fun get3() = greetingsMessageService.greet()

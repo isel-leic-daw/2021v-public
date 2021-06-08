@@ -1,5 +1,35 @@
 version: "3.3"
 services:
+  spring1:
+    container_name: spring1
+    hostname: spring1
+    build:
+      context: .
+      dockerfile: dockerfile-spring
+    environment:
+      - PORT=8081
+    ports:
+      - 8081:8081
+  spring2:
+    container_name: spring2
+    hostname: spring2
+    build:
+      context: .
+      dockerfile: dockerfile-spring
+    environment:
+      - PORT=8082
+    ports:
+      - 8082:8082
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - 8080:8080
+    volumes:
+    - ./nginx:/etc/nginx
+    depends_on:
+      - spring1
+      - spring2
   db-tests:
     container_name: db-tests
     build:

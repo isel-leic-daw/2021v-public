@@ -4,7 +4,7 @@ import './Page.css'
 
 import { PowerButton } from './components/PowerButton'
 import { TemperatureCard } from './components/temperature/TemperatureCard'
-import { PowerState, toggle, Temperature, ControlledTemperature, PowerStateDto } from './Model'
+import { PowerState, toggle, Temperature, ControlledTemperature, TemperatureDto, PowerStateValue } from './Model'
 import { Credentials } from '../login/UserSession'
 import { Service, getMockedService, getService } from './Service'
 
@@ -17,14 +17,21 @@ import * as Siren from '../common/Siren'
  * @property viewModel  - the associated view model instance
  */
 type PageProps = {
-  service: Service
+  service: Service,
+  apiBaseUrl: string
 }
 
 /**
  * Types used to represent the page's power state and power update state. 
  */
-type PowerStateUpdate = API.Request<Siren.Entity<PowerStateDto>> 
-type PowerStateInfo = API.FetchInfo<Siren.Entity<PowerStateDto>> 
+type PowerStateUpdate = API.Request<Siren.Entity<PowerStateValue>> 
+type PowerStateInfo = API.FetchInfo<Siren.Entity<PowerStateValue>> 
+
+/**
+ * Types used to represent the page's temperature state and temperature update state. 
+ */
+type TemperatureUpdate = API.Request<Siren.Entity<TemperatureDto>>
+type TemperatureInfo = API.FetchInfo<Siren.Entity<TemperatureDto>>
 
 /**
  * Gets the power state value from the given information produced by the API.
@@ -57,14 +64,15 @@ export function Page(props: PageProps) {
   const [powerState, setPowerState] = useState<PowerStateInfo | undefined>()
   const [powerStateUpdate, setPowerStateUpdate] = useState<PowerStateUpdate>(props.service.getPowerState())
 
-  const [temperatureState, setTemperatureState] = useState<ControlledTemperature | undefined>()
+  const [temperatureState, setTemperatureState] = useState<TemperatureInfo | undefined>()
+  const [temperatureUpdate, setTemperatureUpdate] = useState<TemperatureUpdate>(props.service.getTemperature())
   const userSession = useContext(UserSession.Context)
 
   useEffect(() => { 
-    async function sendPowerRequest(request: API.Request<Siren.Entity<PowerStateDto>>) {
+    async function sendPowerRequest(request: PowerStateUpdate) {
       try {
         setPowerState({ status: API.FetchState.NOT_READY })
-        const result: API.Result<Siren.Entity<PowerStateDto>> = await request.send()
+        const result: API.Result<Siren.Entity<PowerStateValue>> = await request.send()
         
         setPowerState({ 
           status: result.header.ok && result.body ? API.FetchState.SUCCESS : API.FetchState.ERROR,
@@ -89,31 +97,43 @@ export function Page(props: PageProps) {
     }
   }
 
-  /*
   useEffect(() => {
-    async function loadTemperature() {
-      console.log("Loading temperature ...")
-      const currTemperature = await props.service.getTemperature()
-      setTemperatureState(currTemperature)
+    async function sendTemperatureRequest(request: TemperatureUpdate) {
+      try {
+        const result: API.Result<Siren.Entity<TemperatureDto>> = await request.send()
+        
+        setTemperatureState({ 
+          status: result.header.ok && result.body ? API.FetchState.SUCCESS : API.FetchState.ERROR,
+          result
+        })
+      }
+      catch(reason) {
+        if(reason.name !== 'AbortError')
+          setPowerState({ status: API.FetchState.ERROR })
+      }
     }
-    console.log("Running temperature state effect ...")
-    if (!temperatureState) loadTemperature()
-  }, [props.service, temperatureState])
-  */
-  /*
-  console.log(`ControlPage.render(): 
-    powerstate = ${JSON.stringify(powerState)} 
-    temperatureState = ${JSON.stringify(temperatureState)}`)
-    */
 
-  async function handleTargetTemperatureChange(newTemperature: Temperature): Promise<void> {
-    if (temperatureState) {
-      setTemperatureState({ current: temperatureState.current, target: undefined})
-      const newTarget = await props.service.setTargetTemperature(newTemperature)
-      setTemperatureState( { current: temperatureState.current, target: newTarget } )
+    sendTemperatureRequest(temperatureUpdate)
+    // TODO: Support cancelation
+
+  }, [props.service, temperatureUpdate])
+
+  function handleTargetTemperatureChange(newTemperature: Temperature) {
+
+    if (temperatureState?.result && temperatureState?.status === API.FetchState.SUCCESS) {
+      const targetTemperatureUrl = temperatureState?.result?.body?.links?.find(it => it.rel.includes('/hvac/rel/target-temperature'))
+      props.service.setTargetTemperatureUrl(targetTemperatureUrl ? new URL(`${props.apiBaseUrl}${targetTemperatureUrl.href}`) : undefined)  
+      setTemperatureState({ status: API.FetchState.NOT_READY })
+      setTemperatureUpdate(props.service.setTargetTemperature(newTemperature))
     }
   }
   
+  const temperature = temperatureState?.result?.body?.properties ? {
+    current: new Temperature(temperatureState?.result?.body?.properties.current),
+    target: new Temperature(temperatureState?.result?.body?.properties.target)
+  } : undefined
+
+  const targetEditable = temperatureState?.result?.body?.actions?.find(it => it.name === 'set-target-temperature')
   return (
     !userSession?.credentials ? <> </> : 
     <>
@@ -124,7 +144,8 @@ export function Page(props: PageProps) {
       </button>
       <PageHeader powerState={powerState} onClick={handlePowerToggle} />
       <PageBody 
-        temperature={temperatureState} 
+        targetEditable={!!targetEditable}
+        temperature={temperature} 
         handleTemperatureChange={handleTargetTemperatureChange} />
     </>
   )
@@ -141,8 +162,6 @@ type PageHeaderProps = {
  * @returns The React Element used to render the page's header (i.e. ON/OFF button).
  */
 function PageHeader(props: PageHeaderProps) {
-
-  console.log(JSON.stringify(props.powerState))
 
   const power = getPowerStateValue(props.powerState)
   const hasSetAction: boolean = !!props.powerState?.result?.body?.actions?.find(
@@ -163,8 +182,9 @@ function PageHeader(props: PageHeaderProps) {
  * Type that specifies the prop object for the PageBody component that displays the 
  * temperature information, both current and desired temperature.
  */
-type TemperatureProps = {
-  temperature?: ControlledTemperature
+type PageBodyProps = {
+  targetEditable: boolean,
+  temperature?: ControlledTemperature,
   handleTemperatureChange?: (newTemperature: Temperature) => void
 }
 
@@ -173,13 +193,13 @@ type TemperatureProps = {
  * @param {TemperatureProps} props - The props object.
  * @returns The React Element used to render the page's body (i.e. temperature controls).
  */
-function PageBody(props: TemperatureProps) {
+function PageBody(props: PageBodyProps) {
   return (
     <div className="ui text container Control-body">
       <div className="ui centered cards">
         <TemperatureCard value={props.temperature?.current} label="Current" />
         <TemperatureCard value={props.temperature?.target} label="Target" 
-          editable={true} disabled={false} 
+          editable={props.targetEditable} disabled={false} 
           handleSetTemperature={props.handleTemperatureChange} />
       </div>
     </div>
@@ -189,13 +209,13 @@ function PageBody(props: TemperatureProps) {
 /**
  * Creates an implementation of the HVAC control service. If any of the resource's URL is not provided, a mocked 
  * implementation is produced.
- * @param temperature - the temperature resource URL.
- * @param powerState  - the power state resource URL.
- * @param credentials - the user's credentials.
+ * @param temperature       - the temperature resource URL.
+ * @param powerState        - the power state resource URL.
+ * @param credentials       - the user's credentials.
  * @returns The service instance.
  */
  export function createService(temperature?: URL, powerState?: URL, credentials?: Credentials): Service {
    if (!temperature || !powerState || !credentials)
-    return getMockedService({ value: PowerState.OFF }, { current: new Temperature(21), target: new Temperature(21) })
+    return getMockedService({ value: PowerState.OFF }, { current: 21, target: 21 })
   else return getService(temperature, powerState, credentials)
 }

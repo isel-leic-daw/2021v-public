@@ -68,7 +68,7 @@ class TemperatureController(private val hvac: Hvac) {
         )
 
     @GetMapping
-    fun getTemperature(): ResponseEntity<SirenEntity<TemperatureInfoOutputModel>> =
+    fun getTemperature(req: HttpServletRequest): ResponseEntity<SirenEntity<TemperatureInfoOutputModel>> =
         // We can explicitly override the produced Content-Type header, as shown here. In this case, the header will
         // refer to the SIREN_MEDIA_TYPE, regardless of the client asking for it or, more generally, for JSON
         ResponseEntity.ok()
@@ -76,7 +76,8 @@ class TemperatureController(private val hvac: Hvac) {
             .body(
                 TemperatureInfoOutputModel(hvac.current.value, hvac.target.value)
                     .toSirenObject(
-                        links = listOf(selfLink(TEMPERATURE_PATH), CURRENT_TEMPERATURE_LINK, TARGET_TEMPERATURE_LINK, POWER_STATE_LINK)
+                        links = listOf(selfLink(TEMPERATURE_PATH), CURRENT_TEMPERATURE_LINK, TARGET_TEMPERATURE_LINK, POWER_STATE_LINK),
+                        actions = if (req.isFromOwner()) listOf(SET_TARGET_TEMPERATURE_ACTION) else emptyList()
                     )
             )
 }

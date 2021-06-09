@@ -3,8 +3,12 @@
  */
 export enum PowerState { ON = "ON", OFF = "OFF" }
 
+export type TemperatureDto = { 
+  current: number, 
+  target: number 
+}
 
-export type PowerStateDto = {
+export type PowerStateValue = {
   value: PowerState
 }
 

@@ -82,7 +82,7 @@ function PageRouter({fetchHomeInfo}: RouterProps) {
       case API.FetchState.NOT_READY: content = <SplashPage />; break
       case API.FetchState.ERROR: content = <OfflinePage />; break
       default: content = invalidCredentials ? <InvalidCredentialsPage /> : 
-        <Hvac.Page service={Hvac.createService(
+        <Hvac.Page apiBaseUrl={API_BASE_URL} service={Hvac.createService(
           new URL(`${API_BASE_URL}${homeInfo.result?.body?.resources?.temperature?.href ?? ''}`),
           new URL(`${API_BASE_URL}${homeInfo.result?.body?.resources?.power_state?.href ?? '/'}`),
           userSession?.credentials

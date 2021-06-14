@@ -54,7 +54,7 @@ class TemperatureControllerTests {
     }
 
     @Test
-    fun getTemperature_fromOwner_shouldReturn200AndATemperatureInfoSirenPayloadWithNoActions() {
+    fun getTemperature_fromOwner_shouldReturn200AndATemperatureInfoSirenPayloadWithSetTargetAction() {
 
         mvc.get(TEMPERATURE_PATH) {
             accept = MediaType(APPLICATION_TYPE, SIREN_SUBTYPE)
@@ -66,7 +66,8 @@ class TemperatureControllerTests {
             jsonPath("$.properties.target") { isNumber() }
             jsonPath("$.properties.current") { isNumber() }
             jsonPath("$.links") { isArray() }
-            jsonPath("$.actions") { doesNotExist() }
+            jsonPath("$.actions") { isArray() }
+            jsonPath("$.actions[?(@.name=='set-target-temperature')]") { exists() }
         }
     }
 

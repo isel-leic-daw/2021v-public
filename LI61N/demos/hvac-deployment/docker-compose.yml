@@ -28,9 +28,10 @@ services:
     container_name: nginx
     image: nginx
     ports:
-      - "8080:8080"
+      - "3000:3000"
     volumes:
       - ./nginx:/etc/nginx
+      - ../hvac-ui/build:/www
     depends_on:
       - web-api-1
       - web-api-2

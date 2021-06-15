@@ -14,7 +14,7 @@ import * as API from './common/FetchUtils'
 
 // TODO: this should be an environment variable
 const API_BASE_URL = 'http://localhost:3000/api'
-const HOME_URL = new URL(`${API_BASE_URL}`)
+const HOME_URL = new URL(`${API_BASE_URL}/`)
 
 /**
  * The application's splash page, displayed during startup.

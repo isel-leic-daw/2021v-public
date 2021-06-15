@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  web-api-1:
+    container_name: web-api-1
+    hostname: web-api-1
+    build:
+      args:
+        DEPLOYABLE: hvac-spring-mvc-1.0.0-alpha.jar
+      context: ../hvac-spring-mvc
+      dockerfile: dockerfile
+    environment:
+      - PORT=8081
+    expose:
+      - "8081"
+  web-api-2:
+    container_name: web-api-2
+    hostname: web-api-2
+    build:
+      args:
+        DEPLOYABLE: hvac-spring-mvc-1.0.0-alpha.jar
+      context: ../hvac-spring-mvc
+      dockerfile: dockerfile
+    environment:
+      - PORT=8082
+    expose:
+      - "8082"
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx:/etc/nginx
+    depends_on:
+      - web-api-1
+      - web-api-2
+

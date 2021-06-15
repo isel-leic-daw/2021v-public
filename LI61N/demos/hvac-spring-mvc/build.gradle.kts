@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "isel.leic.daw"
-version = "0.0.1-SNAPSHOT"
+version = "1.0.0-alpha"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
@@ -32,4 +32,10 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.register<Copy>("copyUberJar") {
+	dependsOn("assemble")
+	from("$buildDir/libs/${rootProject.name}-$version.jar")
+	into("build/deliverable")
 }

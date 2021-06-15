@@ -1,0 +1,10 @@
+# The base image
+FROM openjdk:11
+# We expect a build argument identifying the web api deployable
+ARG DEPLOYABLE
+ENV DEPLOYABLE_JAR=${DEPLOYABLE}
+WORKDIR /usr/src/web-api 
+# Let's copy the deployable to the image
+COPY /build/deliverable/${DEPLOYABLE} /usr/src/web-api
+# Specifies the entrypoint to be called on container startup
+ENTRYPOINT java -jar ${DEPLOYABLE_JAR}

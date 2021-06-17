@@ -140,7 +140,7 @@ Lecturer: Paulo Pereira
   * Bootstrapping a React based frontend
     * [Create React App](https://create-react-app.dev/docs/getting-started/)
     * [TypeScript for JavaScript Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
-    * [TypeScript fpr Java/C# Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes-oop.html)
+    * [TypeScript for Java/C# Programmers](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes-oop.html)
 * React programming model and core concepts:
   * [JSX](https://reactjs.org/docs/introducing-jsx.html) (or [TSX](https://www.typescriptlang.org/docs/handbook/jsx.html))
   * [Elements](https://reactjs.org/docs/rendering-elements.html)
@@ -213,4 +213,32 @@ Lecturer: Paulo Pereira
   * [Fetch](https://fetch.spec.whatwg.org/)
   * [CORS - Cross Origin Resource Sharing](https://fetch.spec.whatwg.org/#http-cors-protocol)
 
+[Lecture Video (in Portuguese)](https://www.youtube.com/watch?v=02T6pVd1fJg&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=10)
+
+### 02/06/2021 - Creating a Web UI with React Hooks (continued)
+* Using Hypermedia on the client
+  * Motivation and trade-offs
+  * Hypermedia as a means to express navigation
+    * Leveraging the API's Home resource (with [JSON Home](https://mnot.github.io/I-D/json-home/))
+    * Leveraging links contained in [Siren](https://github.com/kevinswiber/siren) external representations 
+  * Hypermedia as a means to express application capabilities
+    * Leveraging links and actions contained in [Siren](https://github.com/kevinswiber/siren) external representations
+  * Hypermedia as a means to deal with evolvability
+* Documentation:
+  * ["Designing evolvable Web APIs: Chapter 9"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/ch09.html)
+
+[Lecture Video (in Portuguese)]([__coming soon__](https://www.youtube.com/watch?v=02T6pVd1fJg&list=PL8XxoCaL3dBiBwOrdGKPJ7SqZwl29xO6K&index=11))
+
+### 16/06/2021 - Wrapping up
+* Overview of the course's main topics
+* Deployment considerations
+* Docker, introduction
+  * Motivation
+* Using Docker to fully specify the solution's stack
+* For reference:
+  * [Docker reference](https://docs.docker.com/reference/)
+  * [Nginx load balancing](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/)
+  * [Nginx serving static content](https://docs.nginx.com/nginx/admin-guide/web-server/serving-static-content/#)
+  * [Packaging options for the JVM](https://dzone.com/articles/the-skinny-on-fat-thin-hollow-and-uber)
 [Lecture Video (in Portuguese)](__coming soon__)
+

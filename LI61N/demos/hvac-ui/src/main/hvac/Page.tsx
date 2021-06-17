@@ -100,8 +100,8 @@ export function Page(props: PageProps) {
   useEffect(() => {
     async function sendTemperatureRequest(request: TemperatureUpdate) {
       try {
+        setTemperatureState({ status: API.FetchState.NOT_READY })
         const result: API.Result<Siren.Entity<TemperatureDto>> = await request.send()
-        
         setTemperatureState({ 
           status: result.header.ok && result.body ? API.FetchState.SUCCESS : API.FetchState.ERROR,
           result
@@ -121,10 +121,14 @@ export function Page(props: PageProps) {
   function handleTargetTemperatureChange(newTemperature: Temperature) {
 
     if (temperatureState?.result && temperatureState?.status === API.FetchState.SUCCESS) {
-      const targetTemperatureUrl = temperatureState?.result?.body?.links?.find(it => it.rel.includes('/hvac/rel/target-temperature'))
-      props.service.setTargetTemperatureUrl(targetTemperatureUrl ? new URL(`${props.apiBaseUrl}${targetTemperatureUrl.href}`) : undefined)  
-      setTemperatureState({ status: API.FetchState.NOT_READY })
-      setTemperatureUpdate(props.service.setTargetTemperature(newTemperature))
+      const updateUrl = temperatureState?.result?.body && Siren.getAction(temperatureState?.result?.body, Siren.SET_TARGET_ACTION)
+      if (updateUrl)
+        setTemperatureUpdate(
+          props.service.setTargetTemperature(
+            new URL(`${props.apiBaseUrl}${updateUrl.href}`), 
+            newTemperature
+          )
+        )
     }
   }
   
@@ -133,7 +137,7 @@ export function Page(props: PageProps) {
     target: new Temperature(temperatureState?.result?.body?.properties.target)
   } : undefined
 
-  const targetEditable = temperatureState?.result?.body?.actions?.find(it => it.name === 'set-target-temperature')
+  const targetEditable = temperatureState?.result?.body && Siren.getAction(temperatureState.result.body, Siren.SET_TARGET_ACTION)
   return (
     !userSession?.credentials ? <> </> : 
     <>
@@ -164,9 +168,8 @@ type PageHeaderProps = {
 function PageHeader(props: PageHeaderProps) {
 
   const power = getPowerStateValue(props.powerState)
-  const hasSetAction: boolean = !!props.powerState?.result?.body?.actions?.find(
-    (action: Siren.Action) => action.name === Siren.SET_POWER_STATE_ACTION
-  )
+  const hasSetAction = props.powerState?.result?.body && 
+    Siren.getAction(props.powerState?.result?.body, Siren.SET_POWER_STATE_ACTION)
 
   return (
       <div className="Control-header">

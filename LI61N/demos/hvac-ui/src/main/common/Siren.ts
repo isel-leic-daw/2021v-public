@@ -47,3 +47,13 @@ export type Entity<T> = {
 }
 
 export const SET_POWER_STATE_ACTION = 'set-power-state'
+export const SET_TARGET_ACTION = 'set-target-temperature'
+
+export function getAction<T>(entity: Entity<T>, actionName: string): Action | undefined {
+  return entity?.actions?.find(it => it.name === actionName)
+}
+
+export function getLink<T>(entity: Entity<T>, rel: string): Link | undefined {
+  return entity.links?.find(it => it.rel.includes(rel))
+}
+

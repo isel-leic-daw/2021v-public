@@ -57,7 +57,7 @@ class TemperatureController(private val hvac: Hvac) {
         return TemperatureInfoOutputModel(hvac.current.value, hvac.target.value)
             .toSirenObject(
                 links = listOf(TARGET_TEMPERATURE_LINK, CURRENT_TEMPERATURE_LINK),
-                actions = if (req.isFromOwner()) listOf(SET_POWER_STATE_ACTION) else emptyList()
+                actions = if (req.isFromOwner()) listOf(SET_POWER_STATE_ACTION, SET_TARGET_TEMPERATURE_ACTION) else emptyList()
             )
     }
 

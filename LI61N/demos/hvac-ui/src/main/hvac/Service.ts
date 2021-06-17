@@ -10,8 +10,7 @@ import { Credentials } from '../login/UserSession'
   setPowerState: (state: PowerStateValue) => Fetch.Request<Siren.Entity<PowerStateValue>>
   getPowerState: () => Fetch.Request<Siren.Entity<PowerStateValue>>
   getTemperature: () => Fetch.Request<Siren.Entity<TemperatureDto>>
-  setTargetTemperature: (value: Temperature) => Fetch.Request<Siren.Entity<TemperatureDto>>
-  setTargetTemperatureUrl: (url?: URL) => void
+  setTargetTemperature: (url: URL, value: Temperature) => Fetch.Request<Siren.Entity<TemperatureDto>>
 }
 
 /**
@@ -70,7 +69,7 @@ export function getMockedService(initialState: PowerStateValue, initialTemperatu
       }
     },
 
-    setTargetTemperature: (target: Temperature): Fetch.Request<Siren.Entity<TemperatureDto>> => {
+    setTargetTemperature: (url: URL, target: Temperature): Fetch.Request<Siren.Entity<TemperatureDto>> => {
       mockedTemperature.target = target.value
       return {
         isCanceled: false, 
@@ -84,9 +83,7 @@ export function getMockedService(initialState: PowerStateValue, initialTemperatu
           }, 5000)
         })
       }
-    },
-
-    setTargetTemperatureUrl: (url?: URL) => { }
+    }
   }
 }
 
@@ -97,8 +94,6 @@ export function getMockedService(initialState: PowerStateValue, initialTemperatu
  * @returns the newly instantiated service.
  */
 export function getService(temperature: URL, powerState: URL, credentials: Credentials): Service {
-
-  let targetTemperature: URL | undefined = undefined
 
   return {
     setPowerState: (value: PowerStateValue): Fetch.Request<Siren.Entity<PowerStateValue>> => {
@@ -123,17 +118,14 @@ export function getService(temperature: URL, powerState: URL, credentials: Crede
       })
     },
 
-    setTargetTemperature: (target: Temperature): Fetch.Request<Siren.Entity<TemperatureDto>> => {
-      if (!targetTemperature) throw new Error("Target temperature resource URL is unknown")
+    setTargetTemperature: (url: URL, target: Temperature): Fetch.Request<Siren.Entity<TemperatureDto>> => {
       const headers = new Headers({ 'Content-type' : 'application/json' })
       if (credentials) headers.append('Authorization', `${credentials.type} ${credentials.content.value}`)
-      return Fetch.cancelableRequest<Siren.Entity<TemperatureDto>>(targetTemperature, {
+      return Fetch.cancelableRequest<Siren.Entity<TemperatureDto>>(url, {
         method: 'PUT',
         headers,
         body: JSON.stringify(target)
       })
-    },
-
-    setTargetTemperatureUrl: (url?: URL) => { targetTemperature = url }
+    }
   }
 }

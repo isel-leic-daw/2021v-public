@@ -48,6 +48,7 @@ function PageRouter({fetchHomeInfo}: RouterProps) {
   const userSession = useContext(UserSession.Context)
   
   useEffect(() => {
+    // TODO: Use a reducer here and add cancellation support
     async function sendRequest(request: API.Request<Home.Info>) {
       try {
         const result: API.Result<Home.Info> = await request.send()

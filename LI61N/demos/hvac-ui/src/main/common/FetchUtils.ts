@@ -51,13 +51,13 @@ export type Request<T> = {
 export function cancelableRequest<T>(url: URL, init?: RequestInit): Request<T> {
 
   const isJson = (mimeType: string | null) => !(!mimeType || !mimeType.toLowerCase().includes('json'))
-  const controller = new AbortController()
 
+  let canceled = false
   return {
-    isCanceled: controller.signal.aborted,
-    cancel: () => { if(!controller.signal.aborted) controller.abort() },
+    isCanceled: canceled,
+    cancel: () => { canceled = true },
     send: async (): Promise<Result<T>>  => {
-      const response = await fetch(url.toString(), { ...init, signal: controller.signal })
+      const response = await fetch(url.toString(), { ...init })
       return response.ok && isJson(response.headers.get('Content-Type')) ?
         { header: response, body: await response.json() } : 
         { header: response }

@@ -73,6 +73,7 @@ export function Page(props: PageProps) {
       try {
         setPowerState({ status: API.FetchState.NOT_READY })
         const result: API.Result<Siren.Entity<PowerStateValue>> = await request.send()
+        if (powerStateUpdate.isCanceled) return
         
         setPowerState({ 
           status: result.header.ok && result.body ? API.FetchState.SUCCESS : API.FetchState.ERROR,
@@ -80,13 +81,13 @@ export function Page(props: PageProps) {
         })
       }
       catch(reason) {
-        if(reason.name !== 'AbortError')
-          setPowerState({ status: API.FetchState.ERROR })
+        if (!powerStateUpdate.isCanceled) return
+        setPowerState({ status: API.FetchState.ERROR })
       }
     }
 
     sendPowerRequest(powerStateUpdate)
-    // TODO: Support cancelation
+    return powerStateUpdate.cancel
 
   }, [props.service, powerStateUpdate])
 
@@ -102,19 +103,21 @@ export function Page(props: PageProps) {
       try {
         setTemperatureState({ status: API.FetchState.NOT_READY })
         const result: API.Result<Siren.Entity<TemperatureDto>> = await request.send()
+        if (request.isCanceled) return
+
         setTemperatureState({ 
           status: result.header.ok && result.body ? API.FetchState.SUCCESS : API.FetchState.ERROR,
           result
         })
       }
       catch(reason) {
-        if(reason.name !== 'AbortError')
-          setPowerState({ status: API.FetchState.ERROR })
+        if (request.isCanceled) return
+        setPowerState({ status: API.FetchState.ERROR })
       }
     }
 
     sendTemperatureRequest(temperatureUpdate)
-    // TODO: Support cancelation
+    return temperatureUpdate.cancel
 
   }, [props.service, temperatureUpdate])
 
